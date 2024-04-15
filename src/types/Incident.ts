@@ -1,0 +1,25 @@
+export type Incident = {
+    numero: string;
+    abierto: Date;
+    solicitante: string;
+    ubicacion: string;
+    breveDescripcion: string;
+    estado: string;
+    grupoAsignacion: string;
+    asignadoA: string;
+    actualizado: Date;
+    abiertoPor: string;
+    motivoParaPonerEnEspera: string;
+    categoria: string;
+    etiquetas: string;
+    subcategoria: string;
+    sintomaCausaRaiz: string;
+    ciAfectado: string;
+    prioridad: string;
+    impacto: string;
+    urgencia: string;
+    ownerGroup: string;
+    incidentePrincipal: string;
+    claimCounter: number;
+    canal: string;
+};
