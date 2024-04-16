@@ -2,6 +2,7 @@
 
 import { useApi } from '@/api/api';
 import Navbar from '@/components/Navbar';
+import { useIncidentContext } from '@/contexts/IncidentContext';
 import { Incident } from '@/types/Incident';
 import React, { useCallback, useEffect, useState } from 'react'
 
@@ -10,13 +11,23 @@ const Home = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isMovingOverDropArea, setIsMovingOverDropArea] = useState(false)
 
-  const [incidents, setIncidents] = useState<Incident[]>([])
+  //const [incidents, setIncidents] = useState<Incident[]>([])
+
+  //context
+  const incidentContext = useIncidentContext();
 
   const api = useApi();
 
   useEffect(() => {
+    console.log(incidentContext)
+    console.log(incidentContext?.incidents)
     handleUploadByButton();
+    incidentContext?.setIncidents([])
   }, [file])
+
+  useEffect(() => {
+    console.log(incidentContext?.incidents)
+  }, [incidentContext?.incidents])
 
 
 
@@ -27,7 +38,7 @@ const Home = () => {
     const fd = new FormData();
     fd.append('excel', file);
 
-    if(file.type !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"){
+    if (file.type !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
       alert("Fichero debe ser un .XLS")
       return
     }
@@ -37,19 +48,16 @@ const Home = () => {
 
     const responseUpload = await api.uploadFile(fd)
     if (responseUpload) {
-      const incidentsWithDate: Incident[] = responseUpload.map((incident : any) => ({
+      const incidentsWithDate: Incident[] = responseUpload.map((incident: any) => ({
         ...incident,
-        abierto: new Date(incident.Abierto),
-        actualizado: new Date(incident.Actualizado),
+        abierto: new Date(incident.abierto),
+        actualizado: new Date(incident.actualizado),
       }))
 
-      console.log(typeof incidentsWithDate[0].actualizado)
-      console.log(typeof incidentsWithDate[0].abierto)
-      console.log(typeof incidentsWithDate[0].asignadoA)
-      console.log(typeof responseUpload[0].signadoA)
-
-      console.log(incidentsWithDate)
-      setIncidents(responseUpload)
+      if (incidentContext) {
+        incidentContext.setIncidents(responseUpload)
+      }
+      //setIncidents(responseUpload)
     }
 
     // Faça o que quiser com o arquivo aqui, como enviar para o servidor, etc.
@@ -92,11 +100,12 @@ const Home = () => {
 
     const responseUpload = await api.uploadFile(fd)
     if (responseUpload) {
-      console.log(responseUpload)
-      setIncidents(responseUpload)
-    }
 
-    console.log(file)
+      if (incidentContext) {
+        incidentContext.setIncidents(responseUpload)
+      }
+
+    }
 
   }
 
@@ -109,21 +118,35 @@ const Home = () => {
 
       <Navbar />
 
-      <div className='h-screen flex justify-center items-center bg-[#f5f5fa]' onDragOver={handleDragOver}>
-      <div className={`h-screen w-full absolute ${isMovingOverDropArea ? 'flex ' : 'hidden '}justify-center items-center bg-[#000]/[.8] text-[#c9c3c3] text-7xl`} onDragLeave={handleDragLeave} onDrop={handleDrop}>Drop it now!</div>
-        <div className='container h-screen'>
-          <div className='flex flex-col justify-center items-center h-screen'>
-            <h1 className='text-2xl -mt-48 mb-4 md:text-4xl font-inter font-bold p-3 text-center '>Importe el fichero excel para empezar el análisis</h1>
-            <h2 className=' text-xl md:text-2xl mb-11 font-poppins text-center'>Analisis fácil y rápido</h2>
+      <div className='h-screen flex justify-center items-center bg-[#f5f5fa] overflow-auto' onDragOver={handleDragOver}>
+        <div id='cu' className={`h-screen w-full absolute ${isMovingOverDropArea ? 'flex ' : 'hidden '}justify-center items-center bg-[#000]/[.8] text-[#c9c3c3] text-7xl`} onDragLeave={handleDragLeave} onDrop={handleDrop}>Drop it now!</div>
 
-            <div className='w-full flex items-center justify-center'>
-              <label htmlFor="fileInput" className='flex items-center justify-center text-white text-2xl md:text-5xl bg-[#e5322d] py-6 px-12 rounded-xl leading-7 min-h-20 min-w-80 w-2/4 hover:bg-[#e5322d]/[.8]'>Select .XLS Files</label>
-              <input id='fileInput' onChange={onHandleChangeInputFile} className='hidden' type="file" />
+        {incidentContext?.incidents.length === 0 &&
+
+          <div className='container h-screen mx-auto overflow-auto'>
+            <div className='flex flex-col justify-center items-center h-screen'>
+              <h1 className='text-2xl -mt-48 mb-4 md:text-4xl font-inter font-bold p-3 text-center '>Importe el fichero excel para empezar el análisis</h1>
+              <h2 className=' text-xl md:text-2xl mb-11 font-poppins text-center'>Analisis fácil y rápido</h2>
+              <div className='w-full flex items-center justify-center'>
+                <label htmlFor="fileInput" className='flex items-center justify-center text-white text-2xl md:text-5xl bg-[#e5322d] py-6 px-12 rounded-xl leading-7 min-h-20 min-w-80 w-2/4 hover:bg-[#e5322d]/[.8]'>Select .XLS Files</label>
+                <input id='fileInput' onChange={onHandleChangeInputFile} className='hidden' type="file" />
+              </div>
+              <div className='md:block sm:hidden mt-8 text-center text-[#47474f] text-2xl'>O arrastre el archivo .xls aquí</div>
             </div>
-
-            <div className='md:block sm:hidden mt-8 text-center text-[#47474f] text-2xl'>O arrastre el archivo .xls aquí</div>
           </div>
-        </div>
+        }
+
+        {incidentContext?.incidents && incidentContext?.incidents.length > 0 &&
+          <div className=''>
+            {incidentContext.incidents.map((item) => (
+              <div className='border-2 p-2'>
+                {item.numero} - {item.brevedescripcion}
+              </div>
+            ))}
+          </div>
+
+        }
+
       </div>
     </>
   )

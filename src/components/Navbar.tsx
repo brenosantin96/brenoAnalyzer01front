@@ -12,11 +12,11 @@ const Navbar = () => {
 
 
     return (
-        <nav className={`flex justify-between items-center w-[98%] mx-auto bg-white`}>
+        <nav className={`flex justify-between items-center w-[98%] mx-auto`}>
             <div className='flex items-center'> {/* Div principal */}
                 <div className='flex justify-center items-center'>
                     <Icon svg='fileTopNavBar' height='48px' width='48px' />
-                    <div className='text-xl -ml-1'>FileAnalyzer</div>
+                    <div className='text-xl -ml-1'>Analyzer</div>
                 </div>
                 
                 {/* Essa div so aparece em dispositivos menores que md */}
@@ -35,8 +35,9 @@ const Navbar = () => {
 
                 </div>
             </div>
+
             {/* Essa div so aparece em dispositivos maiores que md */}
-            <div className={` md:flex sm:hidden md:static absolute bg-white md:min-h-fit min-h-[25vh] left-0 ${isMenuOpened ? `top-[8%]` : `top-[-100%]`} ease-in-out duration-300 md:w-auto w-full flex items-center md:px-5`}>
+            <div className={` md:flex sm:hidden md:static flex bg-white md:min-h-fit min-h-[25vh] left-0 ${isMenuOpened ? `top-[8%]` : `top-[-100%]`} ease-in-out duration-300 md:w-auto w-full flex items-center md:px-5`}>
                     <ul className='flex md:flex-row flex-col md:items-center md:gap-4 gap-8 text-xl '> {/* Lista de itens da navbar */}
                         <li>
                             <a className='hover:text-gray-500' href="#">Incidencias</a>
