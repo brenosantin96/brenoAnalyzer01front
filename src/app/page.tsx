@@ -4,6 +4,7 @@ import { useApi } from '@/api/api';
 import Navbar from '@/components/Navbar';
 import { useIncidentContext } from '@/contexts/IncidentContext';
 import { Incident } from '@/types/Incident';
+import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react'
 
 const Home = () => {
@@ -11,23 +12,22 @@ const Home = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isMovingOverDropArea, setIsMovingOverDropArea] = useState(false)
 
-  //const [incidents, setIncidents] = useState<Incident[]>([])
+  //router
+  const router = useRouter();
 
   //context
   const incidentContext = useIncidentContext();
 
+  //api
   const api = useApi();
 
   useEffect(() => {
-    console.log(incidentContext)
-    console.log(incidentContext?.incidents)
     handleUploadByButton();
-    incidentContext?.setIncidents([])
   }, [file])
 
   useEffect(() => {
-    console.log(incidentContext?.incidents)
-  }, [incidentContext?.incidents])
+    console.log(incidentContext)
+  }, [incidentContext])
 
 
 
@@ -35,8 +35,16 @@ const Home = () => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
 
+    if (!file) {
+      alert("Fichero debe ser un .XLS")
+      setIsMovingOverDropArea(false);
+      return
+    }
+
+
     const fd = new FormData();
     fd.append('excel', file);
+
 
     if (file.type !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
       alert("Fichero debe ser un .XLS")
@@ -103,6 +111,7 @@ const Home = () => {
 
       if (incidentContext) {
         incidentContext.setIncidents(responseUpload)
+        //router.push("/pending-incidents")
       }
 
     }
