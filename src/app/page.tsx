@@ -135,8 +135,8 @@ const Home = () => {
           <div className='container h-screen mx-auto overflow-auto'>
             <div className='flex flex-col justify-center items-center h-screen'>
               <h1 className='text-3xl -mt-48 mb-12 md:text-4xl font-inter font-bold p-3 text-center text-white '>Importe el fichero excel para empezar el análisis</h1>
-              <div className='w-full flex items-center justify-center'>
-                <label htmlFor="fileInput" className='flex items-center justify-center text-white text-2xl md:text-5xl bg-[#006989] py-6 px-12 rounded-full leading-7 min-h-20 min-w-80 w-2/4 hover:bg-[#006989]/[.8] shadow-xl mt-[-1px] relative z-10'>Select .XLS Files</label>
+              <div className='w-full flex items-center justify-center text-center'>
+                <label htmlFor="fileInput" className='flex items-center justify-center text-white text-2xl md:text-5xl bg-[#006989] py-6  rounded-full leading-7 min-h-20 w-72 md:min-w-80 md:w-2/4 hover:bg-[#006989]/[.8] shadow-xl mt-[-1px] relative z-10'>Select .XLS Files</label>
                 <input id='fileInput' onChange={onHandleChangeInputFile} className='hidden' type="file" />
               </div>
               <div className='md:block sm:hidden mt-8 text-center font-medium text-[#FAFAFA] text-2xl'>O arrastre el archivo .xls aquí</div>
