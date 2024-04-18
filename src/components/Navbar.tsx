@@ -13,28 +13,28 @@ const Navbar = () => {
 
 
     return (
-        <nav className={`flex justify-between items-center w-[98%] mx-auto`}>
+        <nav className={`flex justify-between items-center mx-auto bg-[#006989]  px-3 shadow-3xl mt-[-1px] relative z-10`}>
             <div className='flex items-center'> {/* Div principal */}
                 <Link href={'/'}>
                     <div className='flex justify-center items-center cursor-pointer'>
 
-                        <Icon svg='fileTopNavBar' height='48px' width='48px' />
-                        <div className='text-xl -ml-1'>Analyzer</div>
+                        <Icon svg='fileTopNavBar' height='48px' width='48px' fillColor='#FFF' />
+                        <div className='text-xl -ml-1 font-bold text-[#EAEBED]'>Analyzer</div>
 
                     </div>
                 </Link>
 
                 {/* Essa div so aparece em dispositivos menores que md */}
-                <div className={`md:hidden md:static absolute bg-white md:min-h-fit min-h-[25vh] left-0 ${isMenuOpened ? `top-[8%]` : `top-[-100%]`} ease-in-out duration-300 md:w-auto w-full flex items-center md:px-5`}>
-                    <ul className='flex md:flex-row flex-col md:items-center md:gap-4 gap-8 text-xl ml-6 '> {/* Lista de itens da navbar */}
+                <div className={`md:hidden md:static absolute bg-[#006989] md:min-h-fit min-h-[25vh] left-0 ${isMenuOpened ? `top-[8%]` : `top-[-100%]`} ease-in-out duration-300 md:w-auto w-full flex items-center md:px-5`}>
+                    <ul className='flex md:flex-row flex-col md:items-center md:gap-4 gap-8 text-xl ml-6 text-[#EAEBED] '> {/* Lista de itens da navbar */}
                         <li>
-                            <Link className='hover:text-gray-500' href="/pending-incidents">Incidencias</Link>
+                            <Link className='hover:text-[#fdfdfd]' href="/pending-incidents">Incidencias</Link>
                         </li>
                         <li>
-                            <Link className='hover:text-gray-500' href="#">Solicitudes</Link>
+                            <Link className='hover:text-[#fdfdfd]' href="#">Solicitudes</Link>
                         </li>
                         <li>
-                            <Link className='hover:text-gray-500' href="#">Chats</Link>
+                            <Link className='hover:text-[#fdfdfd]' href="#">Chats</Link>
                         </li>
                     </ul>
 
@@ -42,16 +42,16 @@ const Navbar = () => {
             </div>
 
             {/* Essa div so aparece em dispositivos maiores que md */}
-            <div className={` md:flex sm:hidden md:static flex bg-white md:min-h-fit min-h-[25vh] left-0 ${isMenuOpened ? `top-[8%]` : `top-[-100%]`} ease-in-out duration-300 md:w-auto w-full flex items-center md:px-5`}>
-                <ul className='flex md:flex-row flex-col md:items-center md:gap-4 gap-8 text-xl '> {/* Lista de itens da navbar */}
+            <div className={` md:flex sm:hidden md:static flex bg-[#006989] md:min-h-fit min-h-[25vh] left-0 ${isMenuOpened ? `top-[8%]` : `top-[-100%]`} ease-in-out duration-300 md:w-auto w-full flex items-center md:px-5`}>
+                <ul className='hidden md:flex-row flex-col md:items-center md:gap-4 gap-8 text-xl text-[#EAEBED] '> {/* Lista de itens da navbar */}
                     <li>
-                        <Link className='hover:text-gray-500' href="/pending-incidents">Incidencias</Link>
+                        <Link className='hover:text-[#fdfdfd]' href="/pending-incidents">Incidencias</Link>
                     </li>
                     <li>
-                        <Link className='hover:text-gray-500' href="#">Solicitudes</Link>
+                        <Link className='hover:text-[#fdfdfd]' href="#">Solicitudes</Link>
                     </li>
                     <li>
-                        <Link className='hover:text-gray-500' href="#">Chats</Link>
+                        <Link className='hover:text-[#fdfdfd]' href="#">Chats</Link>
                     </li>
                 </ul>
 
@@ -63,10 +63,10 @@ const Navbar = () => {
 
             <div className='md:hidden cursor-pointer' onClick={handleToggleMenu}> {/* Div para o ícone do menu */}
                 {!isMenuOpened &&
-                    <Icon svg='menu' height='48px' width='48px' />
+                    <Icon svg='menu' height='48px' width='48px' classNam='relative z-20' strokeColor='#FFF'  />
                 }
                 {isMenuOpened &&
-                    <Icon svg='close' height='48px' width='48px' />
+                    <Icon svg='close' height='48px' width='48px' classNam='relative z-20' fillColor='#FFF'  />
                 }
             </div>
         </nav>

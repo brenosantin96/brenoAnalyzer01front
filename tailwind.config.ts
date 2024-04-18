@@ -14,14 +14,14 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       fontFamily: {
-        'inter' : ['Inter', 'sans-serif'],
-        'golos' : ['Golos Text', 'sans-serif'],
+        'inter': ['Inter', 'sans-serif'],
+        'golos': ['Golos Text', 'sans-serif'],
         'poppins': ['Poppins', 'sans-serif'],
         'roboto': ['Roboto', 'sans-serif'],
       },
       boxShadow:
       {
-        'shadowcustom' : '-10px 10px 5px 0px rgba(0,0,0,0.75)',
+        '3xl': '0 35px 60px -15px rgba(0, 0, 0, 0.3)',
       }
     },
   },
