@@ -8,25 +8,30 @@ type Props = {
 
 const IncidentsTable = ({ incidents }: Props) => {
     return (
-        <div className='overflow-y-auto overflow-auto bg-red-300'>
-            <table className="m-5 border-spacing-1 table-auto bg-slate-200 border-2">
-                <thead>
-                    <tr>
-                        <th className='border border-slate-400 font-semibold p-3'>Número</th>
-                        <th className='border border-slate-400 font-semibold p-3'>Abierto</th>
-                        <th className='border border-slate-400 font-semibold p-3'>Asignado a</th>
-                        <th className='border border-slate-400 font-semibold p-3'>Actualizado por último</th>
-                        <th className='border border-slate-400 font-semibold p-3'>Pencierre/Pendiente</th>
+        
+            <table className="border-spacing-1 table-auto bg-[#D9D9D9] border-2">
+                <thead className='text-center'>
+
+                    <tr className=' text-center p-2 w-full'>
+                        <td colSpan={3} className='text-xl font-medium p-3'> Deberían estar actualizados </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr className='font-medium text-center'>
+                        <td className='border border-[#ABABAB] text-[#505153] font-semibold p-1 md:p-3'>Técnico</td>
+                        <td className='border border-[#ABABAB] text-[#505153] font-semibold p-1 md:p-3'>Pendientes</td>
+                        <td className='border border-[#ABABAB] text-[#505153] font-semibold p-1 md:p-3'>Pencierres</td>
                     </tr>
                 </thead>
                 <tbody>
-                 {incidents.map((item) => (
-                    <IncidentItemLineTable key={item.numero} incident={item} />
-                ))} 
+                    {incidents.map((item) => (
+                        <IncidentItemLineTable key={item.numero} incident={item} incidents={incidents} />
+                    ))}
 
                 </tbody>
             </table>
-        </div>
+        
     )
 }
 
