@@ -4,7 +4,7 @@ import { useApi } from '@/api/api';
 import Navbar from '@/components/Navbar';
 import { useIncidentContext } from '@/contexts/IncidentContext';
 import { Incident } from '@/types/Incident';
-import { getPendingIncidents } from '@/utils/IncidentsFunctions';
+import { getAllPendingTickets, getPencierreIncidents, getPendingIncidents } from '@/utils/IncidentsFunctions';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react'
 
@@ -64,8 +64,11 @@ const Home = () => {
 
       if (incidentContext) {
         //getting pendingIncidents from total
-        let pendingIncidents = getPendingIncidents(incidentsWithDate)
-        incidentContext.setIncidents(pendingIncidents)
+
+        let allPendingTickets = getAllPendingTickets(incidentsWithDate)
+        console.log("ALL PENDING TICKETS" ,allPendingTickets)
+
+        incidentContext.setIncidents(incidentsWithDate)
         router.push("/pending-incidents")
       }
       //setIncidents(responseUpload)
@@ -122,8 +125,11 @@ const Home = () => {
 
       if (incidentContext) {
         //getting pendingIncidents from total
-        let pendingIncidents = getPendingIncidents(incidentsWithDate)
-        incidentContext.setIncidents(pendingIncidents)
+
+        let allPendingTickets = getAllPendingTickets(incidentsWithDate)
+        console.log("ALL PENDING TICKETS" ,allPendingTickets)
+
+        incidentContext.setIncidents(incidentsWithDate)
         router.push("/pending-incidents")
       }
 
