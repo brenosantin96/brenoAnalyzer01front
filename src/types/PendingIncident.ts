@@ -8,9 +8,7 @@ export type PendingIncidentType = {
     pencierre: boolean;
 }
 
-export type PendingPencierreIncidents = {
-    numero: string,
-    fechaActualizado: Date,
+export type PendingTicketsIncidents = {
     tecnico: string,
     qtdePendiente: number,
     qtdePencierre: number,

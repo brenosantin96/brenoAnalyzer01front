@@ -49,7 +49,7 @@ const Home = () => {
     }
 
     setFile(file);
-    
+
     setIsMovingOverDropArea(false);
 
     const responseUpload = await api.uploadFile(fd)
@@ -66,7 +66,13 @@ const Home = () => {
         //getting pendingIncidents from total
 
         let allPendingTickets = getAllPendingTickets(incidentsWithDate)
-        console.log("ALL PENDING TICKETS" ,allPendingTickets)
+        console.log("ALL PENDING TICKETS", allPendingTickets)
+
+        let pendingIncidentes = getPendingIncidents(incidentsWithDate)
+        console.log("PENDIENTES: ", pendingIncidentes)
+
+        let pendingPencierres = getPencierreIncidents(incidentsWithDate)
+        console.log("PENCIERRES: ", pendingPencierres)
 
         incidentContext.setIncidents(incidentsWithDate)
         router.push("/pending-incidents")
@@ -127,7 +133,13 @@ const Home = () => {
         //getting pendingIncidents from total
 
         let allPendingTickets = getAllPendingTickets(incidentsWithDate)
-        console.log("ALL PENDING TICKETS" ,allPendingTickets)
+        console.log("ALL PENDING TICKETS", allPendingTickets)
+
+        let pendingIncidentes = getPendingIncidents(incidentsWithDate)
+        console.log("PENDIENTES: ", pendingIncidentes)
+
+        let pendingPencierres = getPencierreIncidents(incidentsWithDate)
+        console.log("PENCIERRES: ", pendingPencierres)
 
         incidentContext.setIncidents(incidentsWithDate)
         router.push("/pending-incidents")
@@ -136,7 +148,7 @@ const Home = () => {
     }
 
   }
-  
+
 
 
 

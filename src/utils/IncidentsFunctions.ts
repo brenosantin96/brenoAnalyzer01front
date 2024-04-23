@@ -1,18 +1,18 @@
 import { Incident } from "@/types/Incident";
-import { PendingIncidentType, PendingPencierreIncidents, PendingTickets } from "@/types/PendingIncident";
-import { subDays, isWeekend, isSaturday, isSunday } from 'date-fns'
+import { PendingIncidentType, PendingTickets, PendingTicketsIncidents } from "@/types/PendingIncident";
+import { subDays, isWeekend, isSaturday, isSunday, startOfDay } from 'date-fns'
 import { isMonday } from "date-fns/isMonday";
 import { isTuesday } from "date-fns/isTuesday";
 import { isWednesday } from "date-fns/isWednesday";
+import { Newsreader } from "next/font/google";
 
 
 export const getPendingDate = (today: Date, days: number): Date => {
 
     let pendingDate = subDays(today, days);
 
-    while (isWeekend(pendingDate)) {
-
-        pendingDate = subDays(pendingDate, 2);
+    if (isMonday(today) || isTuesday(today)) {
+        pendingDate = subDays(today, 4)
     }
 
     // setting time to midnight. 
@@ -26,15 +26,39 @@ export const getPendingIncidents = (incidents: Incident[]) => {
 
     const todayDate = new Date();
 
+    //handleWeekendTickets
+    let weekendPendingTickets: Incident[] = []
+    let saturday00 = getLastSaturday(todayDate);
+    let sunday2359 = getLastSunday(todayDate);
+
+    saturday00.setHours(0, 0, 0, 500);
+    sunday2359.setHours(23, 59, 59, 500);
+
+
+    // setting time to midnight. 
+    todayDate.setHours(0, 0, 1, 500);
+
     const pendingDate = getPendingDate(todayDate, 2)
 
+    //Para trazer todos tickets caducados do fim de semana para serem atualizados na terca feira.
+    if (isTuesday(todayDate)) {
+        weekendPendingTickets = incidents.filter((item) => item.actualizado <= sunday2359 &&
+            item.actualizado >= saturday00 &&
+            item.motivoparaponerenespera.includes("Esperando al solicitante") &&
+            !item.etiquetas.includes("PENCIERRE"))
 
-    const filteredIncidents = incidents.filter((item) => item.actualizado <= pendingDate &&
+        console.log("SUNDAY PENDING TICKETS", weekendPendingTickets)
+    }
+
+
+    let filteredIncidents = incidents.filter((item) => item.actualizado <= pendingDate &&
         item.motivoparaponerenespera.includes("Esperando al solicitante") &&
         !item.etiquetas.includes("PENCIERRE"))
 
+    let ticketsConcatenados = filteredIncidents.concat(weekendPendingTickets);
+
     // sorting by date of updatedItem
-    const sortedIncidents = filteredIncidents.sort((a, b) => b.actualizado.getTime() - a.actualizado.getTime());
+    const sortedIncidents = ticketsConcatenados.sort((a, b) => b.actualizado.getTime() - a.actualizado.getTime());
 
 
 
@@ -50,8 +74,6 @@ export const getPendingDatePencierre = (today: Date, days: number): Date => {
         pendingDate = subDays(today, 5)
     }
 
-    console.log("PENDING DATE", pendingDate)
-
     // setting time to midnight. 
     pendingDate.setHours(23, 59, 59, 999);
 
@@ -64,19 +86,41 @@ export const getPencierreIncidents = (incidents: Incident[]) => {
 
     const todayDate = new Date();
 
+    //handleWeekendTickets
+    let weekendPendingTickets: Incident[] = []
+    let saturday00 = getLastSaturday(todayDate);
+    let sunday2359 = getLastSunday(todayDate);
+
+    saturday00.setHours(0, 0, 0, 500);
+    sunday2359.setHours(23, 59, 59, 500);
+
+    todayDate.setHours(0, 0, 0, 500);
+
+
     const pendingDate = getPendingDatePencierre(todayDate, 3)
+
+    //Para trazer todos tickets caducados do fim de semana para serem atualizados na quarta feira.
+    if (isWednesday(todayDate)) {
+        weekendPendingTickets = incidents.filter((item) => item.actualizado <= sunday2359 &&
+            item.actualizado >= saturday00 &&
+            item.motivoparaponerenespera.includes("Esperando al solicitante") &&
+            !item.etiquetas.includes("PENCIERRE"))
+
+        console.log("WEEKEND PENDING TICKETS", weekendPendingTickets)
+    }
+
 
 
     const filteredIncidents = incidents.filter((item) => item.actualizado <= pendingDate &&
         item.motivoparaponerenespera.includes("Esperando al solicitante") &&
         item.etiquetas.includes("PENCIERRE"))
 
+    let ticketsConcatenados = filteredIncidents.concat(weekendPendingTickets);
+
     // sorting by date of updatedItem
-    const sortedIncidents = filteredIncidents.sort((a, b) => b.actualizado.getTime() - a.actualizado.getTime());
+    const sortedIncidents = ticketsConcatenados.sort((a, b) => b.actualizado.getTime() - a.actualizado.getTime());
 
 
-
-    console.log(getPendingTicketsPerTechnicianPencierre(sortedIncidents))
     return sortedIncidents;
 
 }
@@ -140,7 +184,7 @@ export const getPendingTicketsPerTechnicianPencierre = (pencierreIncidents: Inci
 
 export const getAllPendingTickets = (incidents: Incident[]) => {
 
-    const pendingItemsObject: PendingPencierreIncidents[] = [];
+    const pendingItemsObject: PendingTicketsIncidents[] = [];
 
     let pendingTickets = getPendingIncidents(incidents);
     let pencierreTickets = getPencierreIncidents(incidents);
@@ -153,31 +197,30 @@ export const getAllPendingTickets = (incidents: Incident[]) => {
 
         const index = pendingItemsObject.findIndex((element) => element.tecnico === item.asignadoa)
 
+        //se encontrado elemento em pendingItemsObject
         if (index !== -1) {
 
             if (item.etiquetas.includes("PENCIERRE")) {
                 pendingItemsObject[index].qtdePencierre++;
             }
+            if (!item.etiquetas.includes("PENCIERRE")) {
+                pendingItemsObject[index].qtdePendiente++;
+            }
 
-            pendingItemsObject[index].qtdePendiente++;
 
         } else {
 
 
             if (item.etiquetas.includes("PENCIERRE")) {
                 pendingItemsObject.push({
-                    numero: item.numero,
-                    fechaActualizado: item.actualizado,
                     tecnico: item.asignadoa,
                     qtdePencierre: 1,
                     qtdePendiente: 0
                 })
             }
 
-            else {
+            if (!item.etiquetas.includes("PENCIERRE")) {
                 pendingItemsObject.push({
-                    numero: item.numero,
-                    fechaActualizado: item.actualizado,
                     tecnico: item.asignadoa,
                     qtdePencierre: 0,
                     qtdePendiente: 1
@@ -194,20 +237,37 @@ export const getAllPendingTickets = (incidents: Incident[]) => {
 
 }
 
+
+function getLastSunday(date: Date): Date {
+
+    let currentDate = startOfDay(date); // Garante que estamos começando a partir do início do dia
+
+    // Enquanto o dia atual não for domingo, subtrai um dia
+    while (!isSunday(currentDate)) {
+        currentDate = subDays(currentDate, 1);
+    }
+
+    return currentDate;
+}
+
+
+function getLastSaturday(date: Date): Date {
+
+    let currentDate = startOfDay(date); // Garante que estamos começando a partir do início do dia
+
+    // Enquanto o dia atual não for domingo, subtrai um dia
+    while (!isSaturday(currentDate)) {
+        currentDate = subDays(currentDate, 1);
+    }
+
+    return currentDate;
+}
+
+
+
+
+
 //
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //pegar a data atual
 //subtrair dois dias da data atual
@@ -224,3 +284,6 @@ EX: se eu tirar relatorio segunda feira, vai reduzir 02 dias e vai cair no sabad
 EX: se eu tirar relatorio terca feira, vai reduzir 02 dias e vai cair no domingo, que vai reduzir mais 02 dias trazendo pendentes de sexta feira
 
 */
+
+
+//Nao esta pegando o ticket pendente de dois dias atras... que no caso é de domingo...
