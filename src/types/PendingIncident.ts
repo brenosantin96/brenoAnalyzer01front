@@ -12,6 +12,8 @@ export type PendingTicketsIncidents = {
     tecnico: string,
     qtdePendiente: number,
     qtdePencierre: number,
+    ticketsPendientes: Incident[];
+    ticketsPencierre: Incident[];
 }
 
 export type PendingPencierreIncidentType = {

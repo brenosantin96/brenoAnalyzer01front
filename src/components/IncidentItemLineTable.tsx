@@ -1,12 +1,12 @@
 import { Incident } from '@/types/Incident'
+import { PendingTicketsIncidents } from '@/types/PendingIncident';
 import React from 'react'
 
 type Props = {
-    incident: Incident,
-    incidents: Incident[]
+    pendingIncidents: PendingTicketsIncidents;
 }
 
-const IncidentItemLineTable = ({ incident, incidents }: Props) => {
+const IncidentItemLineTable = ({ pendingIncidents }: Props) => {
 
 
 
@@ -15,9 +15,9 @@ const IncidentItemLineTable = ({ incident, incidents }: Props) => {
 
     return (
         <tr className='font-medium'>
-            <td className='md:text-nowrap border border-[#ABABAB] text-[#505153] p-2'>{incident.asignadoa}</td>
-            <td className='border border-[#ABABAB] text-[#505153] p-2 text-center'>3</td>
-            <td className='border border-[#ABABAB] text-[#505153] p-2 text-center'>4</td>
+            <td className='md:text-nowrap border border-[#ABABAB] text-[#505153] p-2'>{pendingIncidents.tecnico}</td>
+            <td className='border border-[#ABABAB] text-[#505153] p-2 text-center'>{pendingIncidents.qtdePendiente}</td>
+            <td className='border border-[#ABABAB] text-[#505153] p-2 text-center'>{pendingIncidents.qtdePencierre}</td>
         </tr>
     )
 }

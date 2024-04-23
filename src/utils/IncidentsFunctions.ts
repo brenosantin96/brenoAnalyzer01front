@@ -182,7 +182,7 @@ export const getPendingTicketsPerTechnicianPencierre = (pencierreIncidents: Inci
 };
 
 
-export const getAllPendingTickets = (incidents: Incident[]) => {
+/* export const getAllPendingTickets = (incidents: Incident[]) => {
 
     const pendingItemsObject: PendingTicketsIncidents[] = [];
 
@@ -224,6 +224,67 @@ export const getAllPendingTickets = (incidents: Incident[]) => {
                     tecnico: item.asignadoa,
                     qtdePencierre: 0,
                     qtdePendiente: 1
+                })
+            }
+
+
+        }
+
+    });
+
+    return pendingItemsObject;
+
+
+} */
+
+export const getAllPendingTickets2 = (incidents: Incident[]) => {
+
+    const pendingItemsObject: PendingTicketsIncidents[] = [];
+
+    let pendingTickets = getPendingIncidents(incidents);
+    let pencierreTickets = getPencierreIncidents(incidents);
+
+    let allPendingTickets = pendingTickets.concat(pencierreTickets);
+
+
+
+    allPendingTickets.forEach((item) => {
+
+        const index = pendingItemsObject.findIndex((element) => element.tecnico === item.asignadoa)
+
+        //se encontrado elemento em pendingItemsObject
+        if (index !== -1) {
+
+            if (item.etiquetas.includes("PENCIERRE")) {
+                pendingItemsObject[index].qtdePencierre++;
+                pendingItemsObject[index].ticketsPencierre.push(item)
+            }
+            if (!item.etiquetas.includes("PENCIERRE")) {
+                pendingItemsObject[index].qtdePendiente++;
+                pendingItemsObject[index].ticketsPendientes.push(item)
+            }
+
+
+        } else {
+
+
+            if (item.etiquetas.includes("PENCIERRE")) {
+                pendingItemsObject.push({
+                    tecnico: item.asignadoa,
+                    qtdePencierre: 1,
+                    qtdePendiente: 0,
+                    ticketsPencierre: [item],
+                    ticketsPendientes: []
+                })
+            }
+
+            if (!item.etiquetas.includes("PENCIERRE")) {
+                pendingItemsObject.push({
+                    tecnico: item.asignadoa,
+                    qtdePencierre: 0,
+                    qtdePendiente: 1,
+                    ticketsPencierre: [],
+                    ticketsPendientes: [item]
                 })
             }
 

@@ -1,10 +1,12 @@
 "use client"
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import IncidentsTable from '../../components/IncidentsTable';
 import { useIncidentContext } from '../../contexts/IncidentContext'
 import Navbar from '@/components/Navbar';
 import TableEx from '@/components/TableEx';
+import { getAllPendingTickets2 } from '@/utils/IncidentsFunctions';
+import { PendingTicketsIncidents } from '@/types/PendingIncident';
 
 
 const PendingIncidents = () => {
@@ -12,9 +14,18 @@ const PendingIncidents = () => {
     //context
     const incidentContext = useIncidentContext();
 
+    const [allPendingTickets, setAllPendingTickets] = useState<PendingTicketsIncidents[]>([])
+
+
+
     useEffect(() => {
-        console.log(incidentContext)
-    })
+
+        if (incidentContext) {
+            let allTickets = getAllPendingTickets2(incidentContext.incidents)
+            setAllPendingTickets(allTickets)
+
+        }
+    }, [incidentContext])
 
     return (
 
@@ -25,7 +36,7 @@ const PendingIncidents = () => {
 
                 <div className='flex flex-col justify-center items-center md:flex-row md:justify-start md:items-start mt-2 md:mt-0 bg-[#EAEBED] w-full '>
                     <aside>
-                        <IncidentsTable incidents={incidentContext.incidents} />
+                        <IncidentsTable pendingIncidents={allPendingTickets} />
                     </aside>
                     <div className='my-3  w-full px-3'>
                         <div>

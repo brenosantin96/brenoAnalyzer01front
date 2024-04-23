@@ -4,7 +4,7 @@ import { useApi } from '@/api/api';
 import Navbar from '@/components/Navbar';
 import { useIncidentContext } from '@/contexts/IncidentContext';
 import { Incident } from '@/types/Incident';
-import { getAllPendingTickets, getPencierreIncidents, getPendingIncidents } from '@/utils/IncidentsFunctions';
+import { getAllPendingTickets2, getPencierreIncidents, getPendingIncidents } from '@/utils/IncidentsFunctions';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react'
 
@@ -65,7 +65,7 @@ const Home = () => {
       if (incidentContext) {
         //getting pendingIncidents from total
 
-        let allPendingTickets = getAllPendingTickets(incidentsWithDate)
+        let allPendingTickets = getAllPendingTickets2(incidentsWithDate)
         console.log("ALL PENDING TICKETS", allPendingTickets)
 
         let pendingIncidentes = getPendingIncidents(incidentsWithDate)
@@ -132,7 +132,7 @@ const Home = () => {
       if (incidentContext) {
         //getting pendingIncidents from total
 
-        let allPendingTickets = getAllPendingTickets(incidentsWithDate)
+        let allPendingTickets = getAllPendingTickets2(incidentsWithDate)
         console.log("ALL PENDING TICKETS", allPendingTickets)
 
         let pendingIncidentes = getPendingIncidents(incidentsWithDate)
