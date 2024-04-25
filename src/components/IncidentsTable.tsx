@@ -5,10 +5,18 @@ import { PendingTicketsIncidents } from '@/types/PendingIncident'
 import { getDate } from 'date-fns/getDate'
 
 type Props = {
-    pendingIncidents: PendingTicketsIncidents[]
+    pendingIncidents: PendingTicketsIncidents[];
+    getSelectedTechnician: (name: string) => void
 }
 
-const IncidentsTable = ({ pendingIncidents }: Props) => {
+const IncidentsTable = ({ pendingIncidents, getSelectedTechnician }: Props) => {
+
+
+    const getTechnician = (name: string) => {
+        getSelectedTechnician(name)
+    }
+
+
     return (
 
         <table className="border-spacing-1 table-auto bg-[#D9D9D9] border-2">
@@ -29,7 +37,7 @@ const IncidentsTable = ({ pendingIncidents }: Props) => {
             <tbody>
                 
                 {pendingIncidents !== undefined && pendingIncidents.map((item) => (
-                    <IncidentItemLineTable key={item.tecnico + new Date().toString()} pendingIncidents={item} />
+                    <IncidentItemLineTable key={item.tecnico + new Date().toString()} pendingIncidents={item} getSelectedTechnician={getTechnician} />
                 ))}
 
             </tbody>

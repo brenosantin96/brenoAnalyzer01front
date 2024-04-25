@@ -15,6 +15,11 @@ const PendingIncidents = () => {
     const incidentContext = useIncidentContext();
 
     const [allPendingTickets, setAllPendingTickets] = useState<PendingTicketsIncidents[]>([])
+    const [techPendingTickets, setTechPendingTickets] = useState<PendingTicketsIncidents>()
+
+    const [togglePendings, setTogglePendings] = useState(false);
+
+    const [selectedTechnician, setSelectedTechnician] = useState("");
 
 
 
@@ -27,6 +32,30 @@ const PendingIncidents = () => {
         }
     }, [incidentContext])
 
+    useEffect(() => {
+
+        console.log(techPendingTickets)
+        
+    }, [techPendingTickets])
+
+ 
+
+    const getTechnician = (name: string) => {
+        setSelectedTechnician(name);
+
+        const pendingTicketsByTechnician = allPendingTickets.find((item: PendingTicketsIncidents) => item.tecnico === name);
+        
+        if(pendingTicketsByTechnician){
+            setTechPendingTickets(pendingTicketsByTechnician)
+        }
+
+        console.log(name)
+    }
+
+  
+
+
+
     return (
 
         <>
@@ -36,7 +65,7 @@ const PendingIncidents = () => {
 
                 <div className='flex flex-col justify-center items-center md:flex-row md:justify-start md:items-start mt-2 md:mt-0 bg-[#EAEBED] w-full '>
                     <aside>
-                        <IncidentsTable pendingIncidents={allPendingTickets} />
+                        <IncidentsTable pendingIncidents={allPendingTickets} getSelectedTechnician={getTechnician} />
                     </aside>
                     <div className='my-3  w-full px-3'>
                         <div>
@@ -55,9 +84,10 @@ const PendingIncidents = () => {
                             <h4 className='text-[#726D6D]'>INC12345678</h4>
                         </div>
                     </div>
+
                 </div>
             }
-
+            <div className='bg-red-500'>{selectedTechnician}</div>
 
         </>
 
