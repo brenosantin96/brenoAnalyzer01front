@@ -53,6 +53,13 @@ const Home = () => {
     setIsMovingOverDropArea(false);
 
     const responseUpload = await api.uploadFile(fd)
+
+    if (!responseUpload) {
+      alert("El fichero debe contener las columnas 'Número', 'Abierto', 'Actualizado', 'Asignado a', 'Motivo para poner en espera', 'Etiquetas'")
+      return;
+    }
+
+
     if (responseUpload) {
 
       const incidentsWithDate: Incident[] = responseUpload.map((incident: any) => ({
@@ -61,21 +68,44 @@ const Home = () => {
         actualizado: new Date(incident.actualizado),
       }))
 
+      const isRitm = /RITM/.test(incidentsWithDate[0].numero);
+
 
       if (incidentContext) {
-        //getting pendingIncidents from total
 
-        let allPendingTickets = getAllPendingTickets2(incidentsWithDate)
-        console.log("ALL PENDING TICKETS", allPendingTickets)
+        if (isRitm) {
 
-        let pendingIncidentes = getPendingIncidents(incidentsWithDate)
-        console.log("PENDIENTES: ", pendingIncidentes)
+          //getting pendingIncidents from total
 
-        let pendingPencierres = getPencierreIncidents(incidentsWithDate)
-        console.log("PENCIERRES: ", pendingPencierres)
+          let allPendingTickets = getAllPendingTickets2(incidentsWithDate)
+          console.log("ALL PENDING RITM TICKETS", allPendingTickets)
 
-        incidentContext.setIncidents(incidentsWithDate)
-        router.push("/pending-incidents")
+          let pendingIncidentes = getPendingIncidents(incidentsWithDate)
+          console.log("RITM PENDIENTES: ", pendingIncidentes)
+
+          let pendingPencierres = getPencierreIncidents(incidentsWithDate)
+          console.log("RITM PENCIERRES: ", pendingPencierres)
+
+          incidentContext.setRequests(incidentsWithDate)
+          router.push("/pending-requests")
+
+        }
+
+        if (!isRitm) {
+
+          let allPendingTickets = getAllPendingTickets2(incidentsWithDate)
+          console.log("ALL PENDING INC TICKETS", allPendingTickets)
+
+          let pendingIncidentes = getPendingIncidents(incidentsWithDate)
+          console.log("INC PENDIENTES: ", pendingIncidentes)
+
+          let pendingPencierres = getPencierreIncidents(incidentsWithDate)
+          console.log("INC PENCIERRES: ", pendingPencierres)
+
+          incidentContext.setIncidents(incidentsWithDate)
+          router.push("/pending-incidents")
+
+        }
       }
       //setIncidents(responseUpload)
     }
@@ -119,6 +149,14 @@ const Home = () => {
 
 
     const responseUpload = await api.uploadFile(fd)
+
+    console.log("response uploda: ", responseUpload)
+
+    if (!responseUpload) {
+      alert("El fichero debe contener las columnas 'Número', 'Abierto', 'Actualizado', 'Asignado a', 'Motivo para poner en espera', 'Etiquetas'")
+      return;
+    }
+
     if (responseUpload) {
 
       const incidentsWithDate: Incident[] = responseUpload.map((incident: any) => ({
@@ -128,21 +166,48 @@ const Home = () => {
       }))
 
 
+      const isRitm = /RITM/.test(incidentsWithDate[0].numero);
 
       if (incidentContext) {
-        //getting pendingIncidents from total
 
-        let allPendingTickets = getAllPendingTickets2(incidentsWithDate)
-        console.log("ALL PENDING TICKETS", allPendingTickets)
+        if (isRitm) {
 
-        let pendingIncidentes = getPendingIncidents(incidentsWithDate)
-        console.log("PENDIENTES: ", pendingIncidentes)
+          //getting pendingIncidents from total
 
-        let pendingPencierres = getPencierreIncidents(incidentsWithDate)
-        console.log("PENCIERRES: ", pendingPencierres)
+          let allPendingTickets = getAllPendingTickets2(incidentsWithDate)
+          console.log("ALL PENDING RITM TICKETS", allPendingTickets)
 
-        incidentContext.setIncidents(incidentsWithDate)
-        router.push("/pending-incidents")
+          let pendingIncidentes = getPendingIncidents(incidentsWithDate)
+          console.log("RITM PENDIENTES: ", pendingIncidentes)
+
+          let pendingPencierres = getPencierreIncidents(incidentsWithDate)
+          console.log("RITM PENCIERRES: ", pendingPencierres)
+
+          incidentContext.setRequests(incidentsWithDate)
+          router.push("/pending-requests")
+
+        }
+
+        if (!isRitm) {
+
+          let allPendingTickets = getAllPendingTickets2(incidentsWithDate)
+          console.log("ALL PENDING INC TICKETS", allPendingTickets)
+
+          let pendingIncidentes = getPendingIncidents(incidentsWithDate)
+          console.log("INC PENDIENTES: ", pendingIncidentes)
+
+          let pendingPencierres = getPencierreIncidents(incidentsWithDate)
+          console.log("INC PENCIERRES: ", pendingPencierres)
+
+          incidentContext.setIncidents(incidentsWithDate)
+          router.push("/pending-incidents")
+
+        }
+
+
+
+
+
       }
 
     }
@@ -159,7 +224,8 @@ const Home = () => {
       <Navbar />
 
       <div className='h-screen flex justify-center items-center bg-[#A3BAC3] overflow-auto' onDragOver={handleDragOver}>
-        <div id='cu' className={`h-screen w-full absolute ${isMovingOverDropArea ? 'flex ' : 'hidden '}justify-center items-center bg-[#000]/[.8] text-[#c9c3c3] text-7xl`} onDragLeave={handleDragLeave} onDrop={handleDrop}>Drop it now!</div>
+
+        <div className={`h-screen w-full absolute ${isMovingOverDropArea ? 'flex ' : 'hidden '}justify-center items-center bg-[#000]/[.8] text-[#c9c3c3] z-30 text-7xl`} onDragLeave={handleDragLeave} onDrop={handleDrop}>Drop it now!</div>
 
 
 

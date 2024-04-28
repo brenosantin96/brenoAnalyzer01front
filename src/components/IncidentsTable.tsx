@@ -3,6 +3,8 @@ import React from 'react'
 import IncidentItemLineTable from './IncidentItemLineTable'
 import { PendingTicketsIncidents } from '@/types/PendingIncident'
 import { getDate } from 'date-fns/getDate'
+import { isSunday } from 'date-fns/isSunday'
+import { isWeekend } from 'date-fns/isWeekend'
 
 type Props = {
     pendingIncidents: PendingTicketsIncidents[];
@@ -11,6 +13,7 @@ type Props = {
 
 const IncidentsTable = ({ pendingIncidents, getSelectedTechnician }: Props) => {
 
+    
 
     const getTechnician = (name: string) => {
         getSelectedTechnician(name)
@@ -23,7 +26,7 @@ const IncidentsTable = ({ pendingIncidents, getSelectedTechnician }: Props) => {
             <thead className='text-center'>
 
                 <tr className=' text-center p-2 w-full'>
-                    <td colSpan={3} className='text-xl font-medium p-3'> Deberían estar actualizados </td>
+                    <td colSpan={3} className='text-xl font-medium p-3'>{isWeekend(new Date()) ? 'Deben ser actualizados el Lunes' : 'Deberían estar actualizados'}  </td>
                     <td></td>
                     <td></td>
                 </tr>

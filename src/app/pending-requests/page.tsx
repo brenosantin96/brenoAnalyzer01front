@@ -9,7 +9,7 @@ import { getAllPendingTickets2 } from '@/utils/IncidentsFunctions';
 import { PendingTicketsIncidents } from '@/types/PendingIncident';
 
 
-const PendingIncidents = () => {
+const PendingRequests = () => {
 
     //context
     const incidentContext = useIncidentContext();
@@ -26,7 +26,7 @@ const PendingIncidents = () => {
     useEffect(() => {
 
         if (incidentContext) {
-            let allTickets = getAllPendingTickets2(incidentContext.incidents)
+            let allTickets = getAllPendingTickets2(incidentContext.requests)
             setAllPendingTickets(allTickets)
 
         }
@@ -108,7 +108,7 @@ const PendingIncidents = () => {
     )
 }
 
-export default PendingIncidents
+export default PendingRequests
 
 
 {/* < div className = 'flex justify-center items-center bg-[#f5f5fa] overflow-auto' >

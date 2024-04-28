@@ -9,7 +9,8 @@ export type Incident = {
     asignadoa: string;
     actualizado: Date;
     abiertopor: string;
-    motivoparaponerenespera: string;
+    motivoparaponerenespera?: string;
+    razonpendiente?: string;
     categoria: string;
     etiquetas: string;
     subcategoria: string;

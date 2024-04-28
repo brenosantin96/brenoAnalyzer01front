@@ -31,7 +31,7 @@ const Navbar = () => {
                             <Link className='hover:text-[#fdfdfd]' href="/pending-incidents">Incidencias</Link>
                         </li>
                         <li>
-                            <Link className='hover:text-[#fdfdfd]' href="#">Solicitudes</Link>
+                            <Link className='hover:text-[#fdfdfd]' href="/pending-requests">Solicitudes</Link>
                         </li>
                         <li>
                             <Link className='hover:text-[#fdfdfd]' href="#">Chats</Link>
@@ -48,7 +48,7 @@ const Navbar = () => {
                         <Link className='hover:text-[#fdfdfd]' href="/pending-incidents">Incidencias</Link>
                     </li>
                     <li>
-                        <Link className='hover:text-[#fdfdfd]' href="#">Solicitudes</Link>
+                        <Link className='hover:text-[#fdfdfd]' href="/pending-requests">Solicitudes</Link>
                     </li>
                     <li>
                         <Link className='hover:text-[#fdfdfd]' href="#">Chats</Link>

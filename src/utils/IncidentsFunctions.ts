@@ -15,6 +15,14 @@ export const getPendingDate = (today: Date, days: number): Date => {
         pendingDate = subDays(today, 4)
     }
 
+    if(isSaturday(today)){
+        pendingDate = subDays(today, 2)
+    }
+
+    if(isSunday(today)){
+        pendingDate = subDays(today, 3)
+    }
+
     // setting time to midnight. 
     pendingDate.setHours(23, 59, 59, 999);
 
@@ -40,20 +48,44 @@ export const getPendingIncidents = (incidents: Incident[]) => {
 
     const pendingDate = getPendingDate(todayDate, 2)
 
+    const isRitm = /RITM/.test(incidents.length > 0 ? incidents[0].numero : "");
+
     //Para trazer todos tickets caducados do fim de semana para serem atualizados na terca feira.
     if (isTuesday(todayDate)) {
-        weekendPendingTickets = incidents.filter((item) => item.actualizado <= sunday2359 &&
-            item.actualizado >= saturday00 &&
-            item.motivoparaponerenespera.includes("Esperando al solicitante") &&
-            !item.etiquetas.includes("PENCIERRE"))
 
-        console.log("SUNDAY PENDING TICKETS", weekendPendingTickets)
+        if (!isRitm) {
+            weekendPendingTickets = incidents.filter((item) => item.actualizado <= sunday2359 &&
+                item.actualizado >= saturday00 &&
+                !item.etiquetas.includes("PENCIERRE") &&
+                item.motivoparaponerenespera?.includes("Esperando al solicitante"))
+
+        }
+
+        if (isRitm) {
+            weekendPendingTickets = incidents.filter((item) => item.actualizado <= sunday2359 &&
+                item.actualizado >= saturday00 &&
+                !item.etiquetas.includes("PENCIERRE") &&
+                item.razonpendiente?.includes("Pendiente de Usuario"))
+        }
+
+        console.log("WEEKEND PENDING TICKETS", weekendPendingTickets)
     }
 
 
-    let filteredIncidents = incidents.filter((item) => item.actualizado <= pendingDate &&
-        item.motivoparaponerenespera.includes("Esperando al solicitante") &&
-        !item.etiquetas.includes("PENCIERRE"))
+    let filteredIncidents : Incident[] = []
+
+
+    if (!isRitm) {
+        filteredIncidents = incidents.filter((item) => item.actualizado <= pendingDate &&
+        !item.etiquetas.includes("PENCIERRE") &&
+        item.motivoparaponerenespera?.includes("Esperando al solicitante"))
+    }
+
+    if (isRitm) {
+        filteredIncidents = incidents.filter((item) => item.actualizado <= pendingDate &&
+        !item.etiquetas.includes("PENCIERRE") &&
+        item.razonpendiente?.includes("Pendiente de Usuario"))
+    }
 
     let ticketsConcatenados = filteredIncidents.concat(weekendPendingTickets);
 
@@ -72,6 +104,14 @@ export const getPendingDatePencierre = (today: Date, days: number): Date => {
 
     if (isMonday(today) || isTuesday(today) || isWednesday(today)) {
         pendingDate = subDays(today, 5)
+    }
+
+    if(isSaturday(today)){
+        pendingDate = subDays(today, 3)
+    }
+
+    if(isSunday(today)){
+        pendingDate = subDays(today, 4)
     }
 
     // setting time to midnight. 
@@ -99,21 +139,43 @@ export const getPencierreIncidents = (incidents: Incident[]) => {
 
     const pendingDate = getPendingDatePencierre(todayDate, 3)
 
+    const isRitm = /RITM/.test(incidents.length > 0 ? incidents[0].numero : "");
+
     //Para trazer todos tickets caducados do fim de semana para serem atualizados na quarta feira.
     if (isWednesday(todayDate)) {
-        weekendPendingTickets = incidents.filter((item) => item.actualizado <= sunday2359 &&
-            item.actualizado >= saturday00 &&
-            item.motivoparaponerenespera.includes("Esperando al solicitante") &&
-            !item.etiquetas.includes("PENCIERRE"))
+
+        if (!isRitm) {
+            weekendPendingTickets = incidents.filter((item) => item.actualizado <= sunday2359 &&
+                item.actualizado >= saturday00 &&
+                item.etiquetas.includes("PENCIERRE") &&
+                item.motivoparaponerenespera?.includes("Esperando al solicitante"))
+
+        }
+
+        if (isRitm) {
+            weekendPendingTickets = incidents.filter((item) => item.actualizado <= sunday2359 &&
+                item.actualizado >= saturday00 &&
+                item.etiquetas.includes("PENCIERRE") &&
+                item.razonpendiente?.includes("Pendiente de Usuario"))
+        }
 
         console.log("WEEKEND PENDING TICKETS", weekendPendingTickets)
     }
 
+    let filteredIncidents : Incident[] = []
 
 
-    const filteredIncidents = incidents.filter((item) => item.actualizado <= pendingDate &&
-        item.motivoparaponerenespera.includes("Esperando al solicitante") &&
-        item.etiquetas.includes("PENCIERRE"))
+    if (!isRitm) {
+        filteredIncidents = incidents.filter((item) => item.actualizado <= pendingDate &&
+        item.etiquetas.includes("PENCIERRE") &&
+        item.motivoparaponerenespera?.includes("Esperando al solicitante"))
+    }
+
+    if (isRitm) {
+        filteredIncidents = incidents.filter((item) => item.actualizado <= pendingDate &&
+        item.etiquetas.includes("PENCIERRE") &&
+        item.razonpendiente?.includes("Pendiente de Usuario"))
+    }
 
     let ticketsConcatenados = filteredIncidents.concat(weekendPendingTickets);
 

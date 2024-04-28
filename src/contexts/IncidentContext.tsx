@@ -5,7 +5,9 @@ import { ReactNode, createContext, useContext, useState } from "react";
 
 type IncidentContextType = {
     incidents: Incident[];
-    setIncidents: (incs: Incident[]) => void
+    requests: Incident[];
+    setIncidents: (incs: Incident[]) => void;
+    setRequests: (reqs: Incident[]) => void;
 }
 
 export const IncidentsContext = createContext<IncidentContextType | null>(null);
@@ -17,9 +19,10 @@ type PropsIncidentsProvider = {
 export const IncidentsProvider = ({ children }: PropsIncidentsProvider) => {
 
     const [incidents, setIncidents] = useState<Incident[]>([]);
+    const [requests, setRequests] = useState<Incident[]>([]);
 
     return (
-        <IncidentsContext.Provider value={{ incidents, setIncidents }}>
+        <IncidentsContext.Provider value={{ incidents, setIncidents, requests, setRequests }}>
             {children}
         </IncidentsContext.Provider>
     )
