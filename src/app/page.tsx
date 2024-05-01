@@ -3,6 +3,7 @@
 import { useApi } from '@/api/api';
 import Navbar from '@/components/Navbar';
 import { useIncidentContext } from '@/contexts/IncidentContext';
+import { Chat } from '@/types/Chat';
 import { Incident } from '@/types/Incident';
 import { getAllPendingTickets2, getPencierreIncidents, getPendingIncidents } from '@/utils/IncidentsFunctions';
 import { useRouter } from 'next/navigation';
@@ -62,56 +63,74 @@ const Home = () => {
 
     if (responseUpload) {
 
-      const incidentsWithDate: Incident[] = responseUpload.map((incident: any) => ({
-        ...incident,
-        abierto: new Date(incident.abierto),
-        actualizado: new Date(incident.actualizado),
-      }))
+      let incidentsWithDate: Incident[] = [];
+      let chatIncidents: Chat[] = []
 
-      const isRitm = /RITM/.test(incidentsWithDate[0].numero);
+      if ('tarea' in responseUpload[0]) {
+        chatIncidents = responseUpload.map((item: any) => ({
+          ...item,
+          creado: new Date(item.creado)
+        }))
+        
+        console.log("chatIncidents", chatIncidents)
 
-
-      if (incidentContext) {
-
-        if (isRitm) {
-
-          //getting pendingIncidents from total
-
-          let allPendingTickets = getAllPendingTickets2(incidentsWithDate)
-          console.log("ALL PENDING RITM TICKETS", allPendingTickets)
-
-          let pendingIncidentes = getPendingIncidents(incidentsWithDate)
-          console.log("RITM PENDIENTES: ", pendingIncidentes)
-
-          let pendingPencierres = getPencierreIncidents(incidentsWithDate)
-          console.log("RITM PENCIERRES: ", pendingPencierres)
-
-          incidentContext.setRequests(incidentsWithDate)
-          router.push("/pending-requests")
-
+        if(incidentContext){
+          console.log("incidenctContextChats", incidentContext.chats)
+          incidentContext.setChats(responseUpload)
         }
+        
+      }
 
-        if (!isRitm) {
+      if (!('tarea' in responseUpload[0])) {
+        incidentsWithDate = responseUpload.map((incident: any) => ({
+          ...incident,
+          abierto: new Date(incident.abierto),
+          actualizado: new Date(incident.actualizado),
+        }))
 
-          let allPendingTickets = getAllPendingTickets2(incidentsWithDate)
-          console.log("ALL PENDING INC TICKETS", allPendingTickets)
+        console.log("incidentsWithDate", incidentsWithDate)
 
-          let pendingIncidentes = getPendingIncidents(incidentsWithDate)
-          console.log("INC PENDIENTES: ", pendingIncidentes)
 
-          let pendingPencierres = getPencierreIncidents(incidentsWithDate)
-          console.log("INC PENCIERRES: ", pendingPencierres)
+        const isRitm = /RITM/.test(incidentsWithDate[0].numero);
 
-          incidentContext.setIncidents(incidentsWithDate)
-          router.push("/pending-incidents")
+        if (incidentContext) {
 
+          if (isRitm) {
+
+            //getting pendingIncidents from total
+
+            let allPendingTickets = getAllPendingTickets2(incidentsWithDate)
+            console.log("ALL PENDING RITM TICKETS", allPendingTickets)
+
+            let pendingIncidentes = getPendingIncidents(incidentsWithDate)
+            console.log("RITM PENDIENTES: ", pendingIncidentes)
+
+            let pendingPencierres = getPencierreIncidents(incidentsWithDate)
+            console.log("RITM PENCIERRES: ", pendingPencierres)
+
+            incidentContext.setRequests(incidentsWithDate)
+            router.push("/pending-requests")
+
+          }
+
+          if (!isRitm) {
+
+            let allPendingTickets = getAllPendingTickets2(incidentsWithDate)
+            console.log("ALL PENDING INC TICKETS", allPendingTickets)
+
+            let pendingIncidentes = getPendingIncidents(incidentsWithDate)
+            console.log("INC PENDIENTES: ", pendingIncidentes)
+
+            let pendingPencierres = getPencierreIncidents(incidentsWithDate)
+            console.log("INC PENCIERRES: ", pendingPencierres)
+
+            incidentContext.setIncidents(incidentsWithDate)
+            router.push("/pending-incidents")
+
+          }
         }
       }
-      //setIncidents(responseUpload)
     }
-
-    // Faça o que quiser com o arquivo aqui, como enviar para o servidor, etc.
-    console.log('Arquivo solto:', file);
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -132,6 +151,15 @@ const Home = () => {
     }
   }
 
+
+
+
+
+
+
+
+
+
   const handleUploadByButton = async () => {
 
     if (!file) {
@@ -150,7 +178,7 @@ const Home = () => {
 
     const responseUpload = await api.uploadFile(fd)
 
-    console.log("response uploda: ", responseUpload)
+    console.log("response upload: ", responseUpload)
 
     if (!responseUpload) {
       alert("El fichero debe contener las columnas 'Número', 'Abierto', 'Actualizado', 'Asignado a', 'Motivo para poner en espera', 'Etiquetas'")
@@ -159,57 +187,74 @@ const Home = () => {
 
     if (responseUpload) {
 
-      const incidentsWithDate: Incident[] = responseUpload.map((incident: any) => ({
-        ...incident,
-        abierto: new Date(incident.abierto),
-        actualizado: new Date(incident.actualizado),
-      }))
+      let incidentsWithDate: Incident[] = [];
+      let chatIncidents: Chat[] = []
 
+      if ('tarea' in responseUpload[0]) {
+        chatIncidents = responseUpload.map((item: any) => ({
+          ...item,
+          creado: new Date(item.creado)
+        }))
 
-      const isRitm = /RITM/.test(incidentsWithDate[0].numero);
+        console.log("chatIncidents", chatIncidents)
 
-      if (incidentContext) {
-
-        if (isRitm) {
-
-          //getting pendingIncidents from total
-
-          let allPendingTickets = getAllPendingTickets2(incidentsWithDate)
-          console.log("ALL PENDING RITM TICKETS", allPendingTickets)
-
-          let pendingIncidentes = getPendingIncidents(incidentsWithDate)
-          console.log("RITM PENDIENTES: ", pendingIncidentes)
-
-          let pendingPencierres = getPencierreIncidents(incidentsWithDate)
-          console.log("RITM PENCIERRES: ", pendingPencierres)
-
-          incidentContext.setRequests(incidentsWithDate)
-          router.push("/pending-requests")
-
+        if(incidentContext){
+          console.log("incidenctContextChats", incidentContext.chats)
+          incidentContext.setChats(responseUpload)
         }
-
-        if (!isRitm) {
-
-          let allPendingTickets = getAllPendingTickets2(incidentsWithDate)
-          console.log("ALL PENDING INC TICKETS", allPendingTickets)
-
-          let pendingIncidentes = getPendingIncidents(incidentsWithDate)
-          console.log("INC PENDIENTES: ", pendingIncidentes)
-
-          let pendingPencierres = getPencierreIncidents(incidentsWithDate)
-          console.log("INC PENCIERRES: ", pendingPencierres)
-
-          incidentContext.setIncidents(incidentsWithDate)
-          router.push("/pending-incidents")
-
-        }
-
-
-
-
-
       }
 
+      if (!('tarea' in responseUpload[0])) {
+        incidentsWithDate = responseUpload.map((incident: any) => ({
+          ...incident,
+          abierto: new Date(incident.abierto),
+          actualizado: new Date(incident.actualizado),
+        }))
+
+        console.log("incidentsWithDate", incidentsWithDate)
+
+
+        const isRitm = /RITM/.test(incidentsWithDate[0].numero);
+
+        if (incidentContext) {
+
+          if (isRitm) {
+
+            //getting pendingIncidents from total
+
+            let allPendingTickets = getAllPendingTickets2(incidentsWithDate)
+            console.log("ALL PENDING RITM TICKETS", allPendingTickets)
+
+            let pendingIncidentes = getPendingIncidents(incidentsWithDate)
+            console.log("RITM PENDIENTES: ", pendingIncidentes)
+
+            let pendingPencierres = getPencierreIncidents(incidentsWithDate)
+            console.log("RITM PENCIERRES: ", pendingPencierres)
+
+            incidentContext.setRequests(incidentsWithDate)
+            router.push("/pending-requests")
+
+          }
+
+          if (!isRitm) {
+
+            let allPendingTickets = getAllPendingTickets2(incidentsWithDate)
+            console.log("ALL PENDING INC TICKETS", allPendingTickets)
+
+            let pendingIncidentes = getPendingIncidents(incidentsWithDate)
+            console.log("INC PENDIENTES: ", pendingIncidentes)
+
+            let pendingPencierres = getPencierreIncidents(incidentsWithDate)
+            console.log("INC PENCIERRES: ", pendingPencierres)
+
+            incidentContext.setIncidents(incidentsWithDate)
+            router.push("/pending-incidents")
+
+          }
+
+        }
+
+      }
     }
 
   }
