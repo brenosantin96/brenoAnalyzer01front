@@ -11,3 +11,13 @@ export type ChatsConversationByTechnician = {
     qtde: number;
     chats: Chat[];
 }
+
+export type ExpiredChatsConversationByTechnician = {
+    tecnico: string,
+    qtdeTotalChats: number;
+    qtdeexpiredChats: number;
+    expiredPorcentage: number;
+    expiredChats: Chat[]
+
+}
+

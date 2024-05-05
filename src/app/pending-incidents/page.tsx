@@ -63,7 +63,7 @@ const PendingIncidents = () => {
             {incidentContext !== null &&
 
 
-                <div className='h-screen flex flex-col justify-center items-center md:flex-row md:justify-start md:items-start mt-2 md:mt-0 bg-[#EAEBED] w-full '>
+                <div className='flex flex-col justify-center items-center md:flex-row md:justify-start md:items-start mt-2 md:mt-0 bg-[#EAEBED] w-full '>
                     <aside>
                         <IncidentsTable pendingIncidents={allPendingTickets} getSelectedTechnician={getTechnician} />
                     </aside>

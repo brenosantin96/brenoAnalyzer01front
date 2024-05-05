@@ -56,6 +56,7 @@ const Home = () => {
     const responseUpload = await api.uploadFile(fd)
 
     if (!responseUpload) {
+      console.log(responseUpload)
       alert("El fichero debe contener las columnas 'Número', 'Abierto', 'Actualizado', 'Asignado a', 'Motivo para poner en espera', 'Etiquetas'")
       return;
     }
@@ -71,14 +72,14 @@ const Home = () => {
           ...item,
           creado: new Date(item.creado)
         }))
-        
-        console.log("chatIncidents", chatIncidents)
 
-        if(incidentContext){
+        // sorting by date of updatedItem
+        const sortedChatConversations = chatIncidents.sort((a, b) => b.creado.getTime() - a.creado.getTime());
+
+        if (incidentContext) {
           console.log("incidenctContextChats", incidentContext.chats)
-          incidentContext.setChats(responseUpload)
+          incidentContext.setChats(sortedChatConversations)
         }
-        
       }
 
       if (!('tarea' in responseUpload[0])) {
@@ -128,9 +129,13 @@ const Home = () => {
             router.push("/pending-incidents")
 
           }
+
         }
+
       }
     }
+
+
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -196,11 +201,12 @@ const Home = () => {
           creado: new Date(item.creado)
         }))
 
-        console.log("chatIncidents", chatIncidents)
+        // sorting by date of updatedItem
+        const sortedChatConversations = chatIncidents.sort((a, b) => b.creado.getTime() - a.creado.getTime());
 
-        if(incidentContext){
+        if (incidentContext) {
           console.log("incidenctContextChats", incidentContext.chats)
-          incidentContext.setChats(responseUpload)
+          incidentContext.setChats(sortedChatConversations)
         }
       }
 
