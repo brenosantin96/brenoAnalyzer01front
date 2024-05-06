@@ -7,6 +7,7 @@ import Navbar from '@/components/Navbar';
 import TableEx from '@/components/TableEx';
 import { getAllPendingTickets2 } from '@/utils/IncidentsFunctions';
 import { PendingTicketsIncidents } from '@/types/PendingIncident';
+import Link from 'next/link';
 
 
 const PendingRequests = () => {
@@ -63,10 +64,28 @@ const PendingRequests = () => {
             {incidentContext !== null &&
 
 
-                <div className='h-screen flex flex-col justify-center items-center md:flex-row md:justify-start md:items-start mt-2 md:mt-0 bg-[#EAEBED] w-full '>
-                    <aside>
-                        <IncidentsTable pendingIncidents={allPendingTickets} getSelectedTechnician={getTechnician} />
-                    </aside>
+                <div className={`md:h-screen flex flex-col justify-center items-center md:flex-row md:justify-start md:items-start mt-2 md:mt-0 bg-[#EAEBED] w-full `}>
+                    
+                    {allPendingTickets.length === 0 &&
+                        <div className='w-full h-3/4 flex flex-col justify-center items-center'>
+                            <p className='text-3xl justify-center items-center mb-5 my-'>
+                                Ninguno fichero .xls importado, hacer clic <strong><Link className='hover:text-[#006989]' href="/">aquí</Link></strong> para importar un fichero y empezar el análisis.
+                            </p>
+                            <p className='text-2xl justify-center items-center mt-5 text-red-500'>
+                                El fichero debe contener las columnas 'Número', 'Abierto', 'Actualizado', 'Asignado a', 'Razón Pendiente', 'Etiquetas'
+                            </p>
+                            <p className='text-2xl justify-center items-center mt-5'>
+                                El fichero se puede coger desde el siguiente enlace:  <strong><Link target='_blank' className='hover:text-[#006989]' href="https://repsolprod.service-now.com/sc_req_item_list.do?sysparm_query=assignment_group%3D0231c292db67ba00b5e3fd651d9619fc%5Estate%3D-5%5Eactive%3Dtrue">Hacer clic aquí</Link></strong>
+                            </p>
+                        </div>
+                    }
+
+
+                    {allPendingTickets.length > 0 &&
+                        <aside>
+                            <IncidentsTable pendingIncidents={allPendingTickets} getSelectedTechnician={getTechnician} />
+                        </aside>
+                    }
 
                     {selectedTechnician !== undefined && techPendingTickets &&
 
