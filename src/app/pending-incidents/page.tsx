@@ -64,10 +64,10 @@ const PendingIncidents = () => {
             {incidentContext !== null &&
 
 
-                <div className='md:h-screen flex flex-col justify-center items-center md:flex-row md:justify-start md:items-start mt-2 md:mt-0 bg-[#EAEBED] w-full '>
+                <div className={`${allPendingTickets.length === 0 ? 'h-screen ' : ' '} md:h-screen flex flex-col justify-center items-center md:flex-row md:justify-start md:items-start mt-2 md:mt-0 bg-[#EAEBED] w-full`}>
 
                     {allPendingTickets.length === 0 &&
-                        <div className='w-full h-3/4 flex flex-col justify-center items-center'>
+                        <div className='mx-5 text-center w-full h-3/4 flex flex-col justify-center items-center'>
                             <p className='text-3xl justify-center items-center mb-5 my-'>
                                 Ninguno fichero .xls importado, hacer clic <strong><Link className='hover:text-[#006989]' href="/">aquí</Link></strong> para importar un fichero y empezar el análisis.
                             </p>

@@ -18,13 +18,15 @@ const WeeklyChats = () => {
     return (
         <>
 
-            <div className='h-screen bg-[#EAEBED]'>
+            
                 <Navbar />
+
+                <div className={`${incidentContext && incidentContext.chats.length === 0 ? 'h-screen ' : ' '} md:h-screen flex flex-col justify-center items-center md:flex-row md:justify-start md:items-start mt-2 md:mt-0 bg-[#EAEBED] w-full`}>
 
                 {incidentContext && incidentContext.chats.length === 0 &&
 
-                    <div className='mx-5 flex flex-col justify-center items-center h-3/4 md:px-5  w-full'>
-                        <p className='text-3xl justify-center items-center mb-5 my-'>
+                    <div className='mx-5 text-center flex flex-col justify-center items-center h-3/4 md:px-5  w-full'>
+                        <p className='text-3xl justify-center items-center mb-5'>
                             Ninguno fichero .xls importado, hacer clic <strong><Link className='hover:text-[#006989]' href="/">aquí</Link></strong> para importar un fichero y empezar el análisis.
                         </p>
                         <p className='text-2xl justify-center items-center mt-5 text-red-500'>
