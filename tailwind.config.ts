@@ -8,11 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
+      backgroundImage: theme => ({
+        'login-background': "url('/assets/bgloginpagez.svg')",
+      }),
       fontFamily: {
         'inter': ['Inter', 'sans-serif'],
         'golos': ['Golos Text', 'sans-serif'],
@@ -22,7 +20,7 @@ const config: Config = {
       boxShadow:
       {
         '3xl': '0 35px 60px -15px rgba(0, 0, 0, 0.3)',
-      }
+      },
     },
   },
   plugins: [],
