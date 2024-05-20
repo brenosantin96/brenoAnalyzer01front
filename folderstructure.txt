@@ -1,0 +1,31 @@
+├───.next
+│   ├───cache
+│   │   ├───swc
+│   │   │   └───plugins
+│   │   │       └───v7_windows_x86_64_0.104.41
+│   │   └───webpack
+│   │       ├───client-development
+│   │       ├───client-development-fallback
+│   │       ├───client-production
+│   │       ├───server-development
+│   │       └───server-production
+│   ├───server
+│   ├───static
+│   │   ├───chunks
+│   │   └───development
+│   └───types
+├───public
+│   └───favicon
+└───src
+    ├───api
+    ├───app
+    │   ├───login
+    │   ├───pending-incidents
+    │   ├───pending-requests
+    │   └───weekly-chats
+    ├───assets
+    ├───components
+    │   └───Icon
+    ├───contexts
+    ├───types
+    └───utils

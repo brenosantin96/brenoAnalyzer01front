@@ -13,5 +13,14 @@ export const useApi = (token?: string) => ({
 
     },
 
+<<<<<<< HEAD
+=======
+    login: async (email: string, password: string) => {
+
+        
+
+    },
+
+>>>>>>> e6efb29f09172639507bf79f6526f45aa65fad7b
 
 })
