@@ -5,8 +5,8 @@ import Navbar from '@/components/Navbar';
 import WeeklyChatsTable from '@/components/WeeklyChatsTable';
 import Link from 'next/link';
 import { Chat, ExpiredChatsConversationByTechnician } from '@/types/Chat';
-import { getAllChatsByTechnician, getExpiredChatName, getExpiredPorcent, getQuantityAllExpiredChats } from '@/utils/ChatsFunctions';
-import * as XLSX from 'xlsx';  
+import { getAllChatsByTechnician, getExpiredChatName, getExpiredPorcent, getQuantityAllExpiredChats } from '../../utils/ChatsFunctions';
+import * as XLSX from 'xlsx';
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 
@@ -18,17 +18,17 @@ const WeeklyChats = () => {
 
     useEffect(() => {
 
-        if(incidentContext?.chats){
+        if (incidentContext?.chats) {
             console.log("allChatsConversations", incidentContext.chats)
             let expiredChatsByTechnician = getAllChatsByTechnician(incidentContext.chats)
-            let sortedChatsByTechnician = expiredChatsByTechnician.sort((a, b) => b.qtdeexpiredChats - a.qtdeexpiredChats)
+            let sortedChatsByTechnician = expiredChatsByTechnician.sort((a: any, b: any) => b.qtdeexpiredChats - a.qtdeexpiredChats)
             setChatsByTechnician(sortedChatsByTechnician);
-        }        
+        }
     }, [incidentContext?.chats])
 
     const getChatConversationFinalDate = (chats: Chat[]) => {
 
-        if(incidentContext?.chats){
+        if (incidentContext?.chats) {
             const stringInitialDate = incidentContext?.chats[0].creado;
             const formattedStringFinalDate = format(stringInitialDate, 'dd/MMMM/yyyy', { locale: es })
             return formattedStringFinalDate;
@@ -37,7 +37,7 @@ const WeeklyChats = () => {
 
     const getChatConversationInitialDate = (chats: Chat[]) => {
 
-        if(incidentContext?.chats){
+        if (incidentContext?.chats) {
             const stringInitialDate = incidentContext?.chats[incidentContext?.chats.length - 1].creado
             const formattedStringInitialDate = format(stringInitialDate, 'dd/MMMM/yyyy', { locale: es })
             return formattedStringInitialDate;
@@ -46,7 +46,7 @@ const WeeklyChats = () => {
 
 
 
-    const exportExcel = (chatsByTechnician : ExpiredChatsConversationByTechnician[], allChatsConversations : Chat[]) => {
+    const exportExcel = (chatsByTechnician: ExpiredChatsConversationByTechnician[], allChatsConversations: Chat[]) => {
 
         let qtdeExpiredChats = 0;
         chatsByTechnician.forEach((item) => qtdeExpiredChats = qtdeExpiredChats + item.qtdeexpiredChats)
@@ -56,16 +56,16 @@ const WeeklyChats = () => {
 
 
         const wsData = [[`Chats ${getChatConversationInitialDate(allChatsConversations)} a ${getChatConversationFinalDate(allChatsConversations)}`],
-            ["Técnico", "Cuant. Chats", "Cuant. Caducados", "% Caducados", "Caducados"],
-            ...chatsByTechnician.map((chat : ExpiredChatsConversationByTechnician) => [
-                chat.tecnico,
-                chat.qtdeTotalChats,
-                chat.qtdeexpiredChats,
-                chat.expiredPorcentage = parseFloat(getExpiredPorcent(chat.qtdeTotalChats, chat.expiredChats).toFixed(2)),
-                chat.expiredChatsString = getExpiredChatName(chat.expiredChats)
+        ["Técnico", "Cuant. Chats", "Cuant. Caducados", "% Caducados", "Caducados"],
+        ...chatsByTechnician.map((chat: ExpiredChatsConversationByTechnician) => [
+            chat.tecnico,
+            chat.qtdeTotalChats,
+            chat.qtdeexpiredChats,
+            chat.expiredPorcentage = parseFloat(getExpiredPorcent(chat.qtdeTotalChats, chat.expiredChats).toFixed(2)),
+            chat.expiredChatsString = getExpiredChatName(chat.expiredChats)
 
-            ]),
-            ["TOTAL", allChatsConversations.length, getQuantityAllExpiredChats(allChatsConversations), allPorcentageExpired02Houses]
+        ]),
+        ["TOTAL", allChatsConversations.length, getQuantityAllExpiredChats(allChatsConversations), allPorcentageExpired02Houses]
         ];
 
         const ws = XLSX.utils.aoa_to_sheet(wsData);
@@ -110,7 +110,7 @@ const WeeklyChats = () => {
 
                         <div className='px-5 mb-10'>
                             <button className='bg-[#13293d] text-[#e8f1f2] p-2 rounded-lg hover:bg-[#1b98e0] hover:text-[#FFF]'
-                            onClick={() => exportExcel(chatsByTechnician, incidentContext.chats)}
+                                onClick={() => exportExcel(chatsByTechnician, incidentContext.chats)}
                             >Exportar Excel</button>
                         </div>
                     </div>
