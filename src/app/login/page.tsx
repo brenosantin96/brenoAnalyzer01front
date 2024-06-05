@@ -11,7 +11,7 @@ const page = () => {
 
 
   return (
-    <div className='bg-blue-300 bg-login-background bg-cover bg-no-repeat h-screen w-full'>
+    <div className='bg-blue-800 bg-[url("/assets/bgloginpagez.svg")] bg-cover bg-no-repeat h-screen w-full'>
       <div className='container mx-auto max-w-lg '>
         <div className='flex justify-center flex-col items-center h-screen p-5'>
           <HeaderLoginPage />
@@ -25,3 +25,4 @@ const page = () => {
 export default page
 
 //url();
+//file has to be in public

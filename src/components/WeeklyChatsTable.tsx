@@ -22,6 +22,8 @@ const WeeklyChatsTable = ({ allChatsConversations }: Props) => {
     const [chatsByTechnician, setChatsByTechnician] = useState<ExpiredChatsConversationByTechnician[]>([])
 
 
+
+
     useEffect(() => {
         const handleResize = () => { setIsSmallScreen(window.innerWidth <= 640); };
 
@@ -35,10 +37,20 @@ const WeeklyChatsTable = ({ allChatsConversations }: Props) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+
+    useEffect(()=> {
+        console.log("chatsByTechnician: ", chatsByTechnician)
+    }, [chatsByTechnician])
+
+
     useEffect(() => {
         console.log("allChatsConversations", allChatsConversations)
         let expiredChatsByTechnician = getAllChatsByTechnician(allChatsConversations)
-        let sortedChatsByTechnician = expiredChatsByTechnician.sort((a, b) => b.qtdeexpiredChats - a.qtdeexpiredChats)
+        let sortedChatsByTechnician = expiredChatsByTechnician.sort((a, b) => b.qtdeTotalChats - a.qtdeTotalChats)
+
+        console.log(sortedChatsByTechnician)
+
+
         setChatsByTechnician(sortedChatsByTechnician);
         console.log("Chats By Techhnician", sortedChatsByTechnician)
     }, [allChatsConversations])

@@ -21,7 +21,7 @@ const WeeklyChats = () => {
         if (incidentContext?.chats) {
             console.log("allChatsConversations", incidentContext.chats)
             let expiredChatsByTechnician = getAllChatsByTechnician(incidentContext.chats)
-            let sortedChatsByTechnician = expiredChatsByTechnician.sort((a: any, b: any) => b.qtdeexpiredChats - a.qtdeexpiredChats)
+            let sortedChatsByTechnician = expiredChatsByTechnician.sort((a: any, b: any) => b.qtdeTotalChats - a.qtdeTotalChats)
             setChatsByTechnician(sortedChatsByTechnician);
         }
     }, [incidentContext?.chats])
@@ -55,8 +55,9 @@ const WeeklyChats = () => {
         let allPorcentageExpired02Houses = parseFloat(allPorcentageExpired.toFixed(2));
 
 
-        const wsData = [[`Chats ${getChatConversationInitialDate(allChatsConversations)} a ${getChatConversationFinalDate(allChatsConversations)}`],
-        ["Técnico", "Cuant. Chats", "Cuant. Caducados", "% Caducados", "Caducados"],
+        //um array, cada elemento é uma linha, cada virgula é uma coluna
+        let wsData = [[`Chats ${getChatConversationInitialDate(allChatsConversations)} a ${getChatConversationFinalDate(allChatsConversations)}`],
+        ["Técnico", "Registrados", "Caducados", "% Caducados", "Chats Caducados"],
         ...chatsByTechnician.map((chat: ExpiredChatsConversationByTechnician) => [
             chat.tecnico,
             chat.qtdeTotalChats,
@@ -67,6 +68,11 @@ const WeeklyChats = () => {
         ]),
         ["TOTAL", allChatsConversations.length, getQuantityAllExpiredChats(allChatsConversations), allPorcentageExpired02Houses]
         ];
+
+
+       // wsData[3].sort((a, b) => b.creado.getTime() - a.creado.getTime());
+        // sorting by date of updatedItem
+        
 
         const ws = XLSX.utils.aoa_to_sheet(wsData);
         const wb = XLSX.utils.book_new();

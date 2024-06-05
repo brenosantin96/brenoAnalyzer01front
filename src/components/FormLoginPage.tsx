@@ -22,7 +22,7 @@ export const FormLoginPage = () => {
 
 
     return (
-        <div className='flex flex-col gap-3 mt-16 w-full'>
+        <div className='flex flex-col gap-3 mt-16 w-full text-white'>
             <CustomImput svg='login'
                 heightSVG='34px'
                 widthSVG='34px'
@@ -43,7 +43,7 @@ export const FormLoginPage = () => {
 
             <button
                 onClick={handleLogin}
-                className='px-2 bg-transparent border-2 text-[#94E958] py-4 border-[#94E958] rounded-md mt-8'
+                className='px-2 bg-transparent border-2 text-[#FFF] hover:bg-white hover:text-blue-600 text-2xl py-4 border-[#FFF] rounded-md mt-8 duration-150 ease-in-out'
             >
                 Login
             </button>
