@@ -15,9 +15,18 @@ export const useApi = (token?: string) => ({
 
     login: async (email: string, password: string) => {
 
-        
+
 
     },
+
+    register: async (name: string, email: string, password: string, isAdmin: string) => {
+        
+        const response = await axios.post(`${baseURL}/api/register`)
+
+        console.log(response)
+
+
+    }
 
 
 })

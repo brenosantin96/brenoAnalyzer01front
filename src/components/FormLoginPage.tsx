@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { CustomImput } from './CustomImput'
 import { useApi } from '@/api/api';
+import Link from 'next/link';
 
 export const FormLoginPage = () => {
 
@@ -16,6 +17,8 @@ export const FormLoginPage = () => {
 
 
     const handleLogin = async () => {
+        //se acertar usuario e palavra passe, vai poder entrar.
+        //realizar pagina de registro? 
        
     }
 
@@ -47,6 +50,10 @@ export const FormLoginPage = () => {
             >
                 Login
             </button>
+
+            <p>Primero acceso? <Link href={'/register'}>Registrese</Link></p>
+
+
         </div>
     )
 }

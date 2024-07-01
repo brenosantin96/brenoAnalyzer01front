@@ -159,13 +159,6 @@ const Home = () => {
 
 
 
-
-
-
-
-
-
-
   const handleUploadByButton = async () => {
 
     if (!file) {
