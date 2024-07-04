@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { CustomImput } from '@/components/CustomImput'
 import { useApi } from '@/api/api'
+import { ModalWarning } from '@/components/ModalWarning'
 
 const page = () => {
 
@@ -12,18 +13,53 @@ const page = () => {
     const [passwordInput, setPasswordInput] = useState("");
     const [passwordInput2, setPasswordInput2] = useState("");
 
+    //dealingWithErrors
+    const [errorz, setErrorz] = useState("")
+
 
     //buttonControl
     const [activeButton, setIsActiveButton] = useState(false);
+    const [registerCreated, setRegisterCreated] = useState(false);
 
-    
+
     useEffect(() => {
         checkPasswords(passwordInput2)
     }, [passwordInput, passwordInput2])
 
+    useEffect(() => {
+        setIsActiveButton(false)
+        setRegisterCreated(false)
+    }, [])
+
+
+    useEffect(() => {
+        console.log("ERROR:", errorz)
+    }, [errorz])
+
 
     const handleRegister = async () => {
-       
+
+        setRegisterCreated(false);
+        setErrorz("");
+        let response = await api.register(nameInput, emailInput, passwordInput, 'false')
+
+        if (response.error) {
+            console.log("Entrou no if")
+            setErrorz(response.error)
+            setNameInput("")
+            setEmailInput("");
+            setPasswordInput("");
+            setPasswordInput2("");
+            setRegisterCreated(false)
+            return;
+        }
+
+        setRegisterCreated(true)
+        setNameInput("")
+        setEmailInput("");
+        setPasswordInput("");
+        setPasswordInput2("");
+
 
     }
 
@@ -40,8 +76,17 @@ const page = () => {
 
 
     return (
-        <div className='bg-blue-800 bg-[url("/assets/bgloginpagez.svg")] bg-cover bg-no-repeat h-screen w-full'>
+        <div className='bg-blue-800 bg-[url("/assets/bgloginpagez.svg")] bg-cover bg-no-repeat h-screen w-full relative'>
             <div className='container mx-auto max-w-lg '>
+
+
+                {errorz !== "" &&
+                    <ModalWarning message={errorz} colorBG='bg-yellow-400' />
+                }
+
+                {registerCreated &&
+                    <ModalWarning message={"Usuario creado con succeso."} colorBG='bg-green-400' link='/login' messageLink='Iniciar sesión' />
+                }
 
                 <div className='flex justify-center flex-col items-center h-screen p-5'>
                     <div className='text-center font-sans text-white '>

@@ -15,7 +15,7 @@ export const FormLoginPage = () => {
         console.log("LOGIN INPUT", loginInput)
     }, [loginInput])
 
-
+  
     const handleLogin = async () => {
         //se acertar usuario e palavra passe, vai poder entrar.
         //realizar pagina de registro? 
