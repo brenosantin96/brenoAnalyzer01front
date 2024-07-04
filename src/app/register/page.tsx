@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { CustomImput } from '@/components/CustomImput'
 import { useApi } from '@/api/api'
 import { ModalWarning } from '@/components/ModalWarning'
+import { isValidEmail, isValidName, isValidPassword } from '@/utils/Validations'
 
 const page = () => {
 
@@ -41,6 +42,25 @@ const page = () => {
 
         setRegisterCreated(false);
         setErrorz("");
+        
+
+        if(!isValidName(nameInput)){
+            setErrorz("Nombre muy corto");
+            return
+        }
+
+        if(!isValidEmail(emailInput)){
+            setErrorz("Correo no corresponde");
+            return
+        }
+
+        if(!isValidPassword(passwordInput2)){
+            setErrorz("Contraseña no cumple con los requisitos");
+            return
+        }
+
+
+
         let response = await api.register(nameInput, emailInput, passwordInput, 'false')
 
         if (response.error) {
