@@ -2,7 +2,7 @@ import React from 'react'
 
 export const HeaderLoginPage = () => {
     return (
-        <div className='text-center font-sans text-white '>
+        <div className='text-center font-sans text-ice-dark-blue '>
             <h1 className='text-4xl md:text-6xl pb-4 font-bold'>
                 Iniciar Sesión
             </h1>

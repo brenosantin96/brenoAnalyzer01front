@@ -15,17 +15,17 @@ export const FormLoginPage = () => {
         console.log("LOGIN INPUT", loginInput)
     }, [loginInput])
 
-  
+
     const handleLogin = async () => {
         //se acertar usuario e palavra passe, vai poder entrar.
         //realizar pagina de registro? 
-       
+
     }
 
 
 
     return (
-        <div className='flex flex-col gap-3 mt-16 w-full text-white'>
+        <div className='flex flex-col gap-3 mt-16 w-full text-ice-dark-blue'>
             <CustomImput svg='login'
                 heightSVG='34px'
                 widthSVG='34px'
@@ -33,6 +33,7 @@ export const FormLoginPage = () => {
                 textPlaceholder='Username or e-mail'
                 value={loginInput}
                 onChangeInput={setLoginInput}
+                placeholderColor='placeholder:text-ice-dark-blue/40'
             />
 
             <CustomImput svg='key'
@@ -42,16 +43,19 @@ export const FormLoginPage = () => {
                 textPlaceholder='Password'
                 value={passwordInput}
                 onChangeInput={setPasswordInput}
+                placeholderColor='placeholder:text-ice-dark-blue/40'
             />
 
             <button
                 onClick={handleLogin}
-                className='px-2 bg-transparent border-2 text-[#FFF] hover:bg-white hover:text-blue-600 text-2xl py-4 border-[#FFF] rounded-md mt-8 duration-150 ease-in-out'
+                className='px-2 bg-transparent border-2 font-semibold text-ice-dark-blue border-ice-dark-blue
+                 hover:bg-ice-lightblue hover:border-ice-white hover:text-ice-white text-2xl py-4
+                 rounded-md mt-8 duration-150 ease-in-out'
             >
                 Login
             </button>
 
-            <p>Primero acceso? <Link href={'/register'}>Registrese</Link></p>
+            <p className='pt-2 text-xl'>Primero acceso? <b><Link href={'/register'}>Registrese</Link></b></p>
 
 
         </div>

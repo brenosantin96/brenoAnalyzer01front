@@ -4,6 +4,7 @@ import { CustomImput } from '@/components/CustomImput'
 import { useApi } from '@/api/api'
 import { ModalWarning } from '@/components/ModalWarning'
 import { isValidEmail, isValidName, isValidPassword } from '@/utils/Validations'
+import Link from 'next/link'
 
 const page = () => {
 
@@ -42,19 +43,19 @@ const page = () => {
 
         setRegisterCreated(false);
         setErrorz("");
-        
 
-        if(!isValidName(nameInput)){
+
+        if (!isValidName(nameInput)) {
             setErrorz("Nombre muy corto");
             return
         }
 
-        if(!isValidEmail(emailInput)){
+        if (!isValidEmail(emailInput)) {
             setErrorz("Correo no corresponde");
             return
         }
 
-        if(!isValidPassword(passwordInput2)){
+        if (!isValidPassword(passwordInput2)) {
             setErrorz("Contraseña no cumple con los requisitos");
             return
         }
@@ -96,7 +97,7 @@ const page = () => {
 
 
     return (
-        <div className='bg-blue-800 bg-[url("/assets/bgloginpagez.svg")] bg-cover bg-no-repeat h-screen w-full relative'>
+        <div className='bg-ice-graybackground bg-[url("/assets/bgloginpagez.svg")] bg-cover bg-no-repeat h-screen w-full relative'>
             <div className='container mx-auto max-w-lg '>
 
 
@@ -109,7 +110,7 @@ const page = () => {
                 }
 
                 <div className='flex justify-center flex-col items-center h-screen p-5'>
-                    <div className='text-center font-sans text-white '>
+                    <div className='text-center font-sans text-ice-dark-blue '>
                         <h1 className='text-4xl md:text-6xl pb-4 font-bold'>
                             Regístrese
                         </h1>
@@ -118,7 +119,7 @@ const page = () => {
                         </h2>
                     </div>
 
-                    <div className='flex flex-col gap-3 mt-16 w-full text-white'>
+                    <div className='flex flex-col gap-3 mt-16 w-full text-ice-dark-blue'>
                         <CustomImput svg='login'
                             heightSVG='34px'
                             widthSVG='34px'
@@ -126,6 +127,7 @@ const page = () => {
                             textPlaceholder='Nombre'
                             value={nameInput}
                             onChangeInput={setNameInput}
+                            placeholderColor='placeholder:text-ice-dark-blue/40'
                         />
 
                         <CustomImput svg='login'
@@ -135,6 +137,7 @@ const page = () => {
                             textPlaceholder='Correo'
                             value={emailInput}
                             onChangeInput={setEmailInput}
+                            placeholderColor='placeholder:text-ice-dark-blue/40'
                         />
 
                         <CustomImput svg='key'
@@ -144,6 +147,7 @@ const page = () => {
                             textPlaceholder='Contraseña'
                             value={passwordInput}
                             onChangeInput={setPasswordInput}
+                            placeholderColor='placeholder:text-ice-dark-blue/40'
                         />
 
                         <CustomImput svg='key'
@@ -153,18 +157,23 @@ const page = () => {
                             textPlaceholder='Repetir Contraseña'
                             value={passwordInput2}
                             onChangeInput={setPasswordInput2}
+                            placeholderColor='placeholder:text-ice-dark-blue/40'
                         />
 
                         <button
                             onClick={handleRegister}
                             className={`
-                              ${activeButton ? "px-2 bg-transparent border-2 text-[#FFF] hover:bg-white hover:text-blue-600 text-2xl py-4 border-[#FFF] rounded-md mt-8 duration-150 ease-in-out" :
-                                    "px-2 bg-[#aaa] border-2 text-[#111010] text-2xl py-4 border-[#aaa] rounded-md mt-8 duration-150 ease-in-out cursor-not-allowed"}  
+                              ${activeButton ? "px-2 bg-transparent border-2 text-ice-dark-blue hover:bg-ice-blue hover:text-ice-white text-2xl py-4 border-ice-dark-blue rounded-md mt-8 duration-150 ease-in-out" :
+                                    "px-2 bg-ice border-2 text-ice-dark-blue text-2xl py-4 border-ice-dark-blue rounded-md mt-8 duration-150 ease-in-out cursor-not-allowed"}  
                             `}
                             disabled={!activeButton}
                         >
-                            Registrar
+                            {activeButton ? "Registrar" : "Rellene todos campos"}
+
                         </button>
+
+                        <p className='pt-2 text-xl'>Ya tiene cuenta de usuario? <b><Link href={'/login'}>Login</Link></b></p>
+
                     </div>
 
                 </div>
