@@ -17,6 +17,11 @@ export const FormLoginPage = () => {
 
 
     const handleLogin = async () => {
+
+        let loginResponse = await api.login(loginInput, passwordInput)
+
+        console.log(loginResponse);
+
         //se acertar usuario e palavra passe, vai poder entrar.
         //realizar pagina de registro? 
 
@@ -25,8 +30,8 @@ export const FormLoginPage = () => {
 
 
     return (
-        <div className='flex flex-col gap-3 mt-16 w-full text-ice-dark-blue'>
-            <CustomImput svg='login'
+        <div className='flex flex-col gap-3 mt-16 w-full'>
+            <CustomImput svg='person'
                 heightSVG='34px'
                 widthSVG='34px'
                 typeInput={'text'}
@@ -49,8 +54,8 @@ export const FormLoginPage = () => {
             <button
                 onClick={handleLogin}
                 className='px-2 bg-transparent border-2 font-semibold text-ice-dark-blue border-ice-dark-blue
-                 hover:bg-ice-lightblue hover:border-ice-white hover:text-ice-white text-2xl py-4
-                 rounded-md mt-8 duration-150 ease-in-out'
+                 hover:bg-ice-blue hover:text-ice-white text-2xl py-4
+                 rounded-md mt-8 duration-300 ease-in-out'
             >
                 Login
             </button>

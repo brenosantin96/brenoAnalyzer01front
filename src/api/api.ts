@@ -3,6 +3,8 @@ import axios from 'axios'
 const baseURL = process.env.NEXT_PUBLIC_BASEURL;
 
 export const useApi = (token?: string) => ({
+
+
     uploadFile: async (formData: FormData) => {
         try {
             const response = await axios.post(`${baseURL}/api/upload`, formData);
@@ -32,4 +34,7 @@ export const useApi = (token?: string) => ({
             return { error: axiosError.response?.data.error || axiosError.message };
         }
     }
+
+    
 });
+

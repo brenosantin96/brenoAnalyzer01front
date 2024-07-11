@@ -2,7 +2,9 @@ import React from 'react'
 import FileSVG from './FileSVG'
 import MenuSVG from './MenuSVG'
 import CloseSVG from './CloseSVG'
-//import { SVGperson } from './SVGperson'
+import LoginSVG from './LoginSVG'
+import { SVGPassword } from './SVGPassword'
+import { SVGperson } from './SVGperson'
 
 type Props = {
     svg: string;
@@ -20,6 +22,9 @@ export const Icon = ({ svg, width, height, fillColor, strokeColor, classNam }: P
             {svg === "fileTopNavBar" && <FileSVG height={height} width={width} />}
             {svg === "menu" && <MenuSVG height={height} width={width} />}
             {svg === "close" && <CloseSVG height={height} width={width} />}
+            {svg === "login" && <LoginSVG height={height} width={width} />}
+            {svg === "key" && <SVGPassword height={height} width={width} />}
+            {svg === "person" && <SVGperson height={height} width={width} />}
         </div>
     )
 }

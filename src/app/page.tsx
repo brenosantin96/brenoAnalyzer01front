@@ -273,6 +273,8 @@ const Home = () => {
 
         <div className={`h-screen w-full absolute ${isMovingOverDropArea ? 'flex ' : 'hidden '}justify-center items-center bg-[#000]/[.8] text-[#c9c3c3] z-30 text-7xl`} onDragLeave={handleDragLeave} onDrop={handleDrop}>Drop it now!</div>
 
+        <div>TESTE</div>
+
 
 
         <div className='container h-screen mx-auto overflow-auto'>

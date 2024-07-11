@@ -22,8 +22,8 @@ export const CustomImput = ({ svg, widthSVG, heightSVG, textPlaceholder, typeInp
 
     return (
         <div className={`flex p-4 border text-ice-dark-blue border-ice-dark-blue rounded-md`}>
-            <div>
-                <Icon svg={svg} width={widthSVG} height={heightSVG} />
+            <div className=''>
+                <Icon svg={svg} width={widthSVG} height={heightSVG} fillColor={fillColorSVG} strokeColor={strokeColorSVG}  />
             </div>
             <input type={typeInput} value={value} onChange={(e)=> onChangeInput(e.target.value)} className={`h-7 text-xl p-4 border-0 outline-0 bg-transparent ${placeholderColor}`} placeholder={textPlaceholder}
             />

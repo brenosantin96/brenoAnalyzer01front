@@ -11,6 +11,8 @@ const Navbar = () => {
         setIsMenuOpened(!isMenuOpened)
     }
 
+    const [isLogged, setIsLogged] = useState(false);
+
 
     return (
         <nav className={`flex justify-between items-center mx-auto bg-[#006989] px-3 shadow-3xl mt-[-1px] relative z-10`}>
@@ -53,6 +55,12 @@ const Navbar = () => {
                     <li>
                         <Link className='hover:text-[#fdfdfd]' href="/weekly-chats">Chats</Link>
                     </li>
+                    {isLogged &&
+                        <li>
+                            <Link className='hover:text-[#fdfdfd]' href="/weekly-chats">Chats</Link>
+                        </li>
+                    }
+
                 </ul>
 
             </div>
@@ -63,10 +71,10 @@ const Navbar = () => {
 
             <div className='md:hidden cursor-pointer' onClick={handleToggleMenu}> {/* Div para o ícone do menu */}
                 {!isMenuOpened &&
-                    <Icon svg='menu' height='48px' width='48px' classNam='relative z-20' strokeColor='#FFF'  />
+                    <Icon svg='menu' height='48px' width='48px' classNam='relative z-20' strokeColor='#FFF' />
                 }
                 {isMenuOpened &&
-                    <Icon svg='close' height='48px' width='48px' classNam='relative z-20' fillColor='#FFF'  />
+                    <Icon svg='close' height='48px' width='48px' classNam='relative z-20' fillColor='#FFF' />
                 }
             </div>
         </nav>

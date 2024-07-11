@@ -120,7 +120,7 @@ const page = () => {
                     </div>
 
                     <div className='flex flex-col gap-3 mt-16 w-full text-ice-dark-blue'>
-                        <CustomImput svg='login'
+                        <CustomImput svg=''
                             heightSVG='34px'
                             widthSVG='34px'
                             typeInput={'text'}
@@ -130,7 +130,7 @@ const page = () => {
                             placeholderColor='placeholder:text-ice-dark-blue/40'
                         />
 
-                        <CustomImput svg='login'
+                        <CustomImput svg=''
                             heightSVG='34px'
                             widthSVG='34px'
                             typeInput={'text'}
@@ -140,7 +140,7 @@ const page = () => {
                             placeholderColor='placeholder:text-ice-dark-blue/40'
                         />
 
-                        <CustomImput svg='key'
+                        <CustomImput svg=''
                             heightSVG='34px'
                             widthSVG='34px'
                             typeInput={'password'}
@@ -150,7 +150,7 @@ const page = () => {
                             placeholderColor='placeholder:text-ice-dark-blue/40'
                         />
 
-                        <CustomImput svg='key'
+                        <CustomImput svg=''
                             heightSVG='34px'
                             widthSVG='34px'
                             typeInput={'password'}
@@ -163,7 +163,7 @@ const page = () => {
                         <button
                             onClick={handleRegister}
                             className={`
-                              ${activeButton ? "px-2 bg-transparent border-2 text-ice-dark-blue hover:bg-ice-blue hover:text-ice-white text-2xl py-4 border-ice-dark-blue rounded-md mt-8 duration-150 ease-in-out" :
+                              ${activeButton ? "px-2 bg-transparent border-2 text-ice-dark-blue hover:bg-ice-blue hover:text-ice-white text-2xl py-4 border-ice-dark-blue rounded-md mt-8 duration-300 ease-in-out" :
                                     "px-2 bg-ice border-2 text-ice-dark-blue text-2xl py-4 border-ice-dark-blue rounded-md mt-8 duration-150 ease-in-out cursor-not-allowed"}  
                             `}
                             disabled={!activeButton}

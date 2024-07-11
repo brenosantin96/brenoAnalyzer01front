@@ -26,3 +26,5 @@ export default page
 
 //url();
 //file has to be in public
+
+//need to fix responsive
