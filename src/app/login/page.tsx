@@ -11,7 +11,7 @@ const page = () => {
 
 
   return (
-    <div className='bg-ice-graybackground bg-[url("/assets/bgloginpagez.svg")] bg-cover bg-no-repeat h-screen w-full'>
+    <div className='bg-ice-graybackground bg-[url("/assets/bgloginpagez.svg")] bg-cover bg-no-repeat h-screen w-full overflow-hidden'>
       <div className='container mx-auto max-w-lg '>
         <div className='flex justify-center flex-col items-center h-screen p-5'>
           <HeaderLoginPage />

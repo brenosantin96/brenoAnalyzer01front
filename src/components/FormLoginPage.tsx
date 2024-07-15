@@ -1,29 +1,37 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { CustomImput } from './CustomImput'
 import { useApi } from '@/api/api';
 import Link from 'next/link';
+import { AuthContext, useAuthContext } from '@/contexts/Auth/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export const FormLoginPage = () => {
 
     const api = useApi();
+    const router = useRouter();
 
     const [loginInput, setLoginInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
 
-    useEffect(() => {
-        console.log("LOGIN INPUT", loginInput)
-    }, [loginInput])
-
-
+    const userContext = useAuthContext()
+    
+    
     const handleLogin = async () => {
 
-        let loginResponse = await api.login(loginInput, passwordInput)
+        let loginResponse = await userContext.signIn(loginInput, passwordInput)
 
-        console.log(loginResponse);
+        if(!loginResponse){
+            alert("Usuario y/o contraseña incorrectos")
+            return
+        }
 
-        //se acertar usuario e palavra passe, vai poder entrar.
-        //realizar pagina de registro? 
+        if(loginResponse){
+            router.push("/");
+            return
+        }
+
+
 
     }
 

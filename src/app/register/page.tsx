@@ -97,7 +97,7 @@ const page = () => {
 
 
     return (
-        <div className='bg-ice-graybackground bg-[url("/assets/bgloginpagez.svg")] bg-cover bg-no-repeat h-screen w-full relative'>
+        <div className='bg-ice-graybackground bg-[url("/assets/bgloginpagez.svg")] bg-cover bg-no-repeat h-screen w-full relative overflow-hidden'>
             <div className='container mx-auto max-w-lg '>
 
 

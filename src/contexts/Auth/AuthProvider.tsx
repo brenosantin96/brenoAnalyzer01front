@@ -39,6 +39,10 @@ export const AuthProvider = ({ children }: ProviderType) => {
     const data = await api.login(email, passwordReq);
 
     if (data.status === true && data.token) {
+
+
+      console.log(data);
+
       setUser(data.user);
       handleToken(data.token);
       return true;
@@ -57,3 +61,5 @@ export const AuthProvider = ({ children }: ProviderType) => {
     </AuthContext.Provider>
   );
 };
+
+

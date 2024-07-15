@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import NavBarStyle from './NavBarStyle.module.css'
 import { Icon } from './Icon/Icon'
 import Link from 'next/link';
+import { useAuthContext } from '@/contexts/Auth/AuthContext';
 
 const Navbar = () => {
 
@@ -12,6 +13,17 @@ const Navbar = () => {
     }
 
     const [isLogged, setIsLogged] = useState(false);
+    const authContext = useAuthContext();
+
+    useEffect(() => {
+        setIsLogged(authContext.user !== null);
+        console.log(authContext)
+    }, [authContext.user]);
+    
+
+    useEffect(()=> {
+        console.log(isLogged)
+    }, [isLogged])
 
 
     return (
@@ -27,8 +39,18 @@ const Navbar = () => {
                 </Link>
 
                 {/* Essa div so aparece em dispositivos menores que md */}
-                <div className={`md:hidden md:static absolute bg-[#006989] md:min-h-fit  left-0 ${isMenuOpened ? `top-[8%]` : `top-[-200%]`} ease-in-out duration-300 md:w-auto w-full flex items-center md:px-5`}>
+                <div className={`md:hidden md:static absolute bg-[#006989] md:min-h-fit  left-0 ${isMenuOpened ? `top-[8%]` : `top-[-300%]`} ease-in-out duration-300 md:w-auto w-full flex items-center md:px-5`}>
                     <ul className='flex md:flex-row flex-col md:items-center md:gap-4 gap-6 py-4 text-xl ml-6 text-[#EAEBED] '> {/* Lista de itens da navbar */}
+                        {!isLogged &&
+                            <li>
+                                <Link className='hover:text-[#fdfdfd]' href="/login">Login</Link>
+                            </li>
+                        }
+                        {isLogged &&
+                            <li>
+                                <Link className='hover:text-[#fdfdfd]' href="/weekly-chats">Salir</Link>
+                            </li>
+                        }
                         <li>
                             <Link className='hover:text-[#fdfdfd]' href="/pending-incidents">Incidencias</Link>
                         </li>
@@ -45,7 +67,7 @@ const Navbar = () => {
 
             {/* Essa div so aparece em dispositivos maiores que md */}
             <div className={` md:flex md:static relative z-20  bg-[#006989] md:min-h-fit  left-0 ${isMenuOpened ? `top-[8%]` : `top-[-100%]`} ease-in-out duration-300 md:w-auto w-full flex items-center md:px-5`}>
-                <ul className='hidden md:flex md:flex-row flex-col md:items-center md:gap-4 gap-4 text-xl text-[#EAEBED] '> {/* Lista de itens da navbar */}
+                <ul className='hidden md:flex md:flex-row flex-col md:items-center md:gap-6 gap-4 text-xl text-[#EAEBED] '> {/* Lista de itens da navbar */}
                     <li>
                         <Link className='hover:text-[#fdfdfd]' href="/pending-incidents">Incidencias</Link>
                     </li>
@@ -57,15 +79,28 @@ const Navbar = () => {
                     </li>
                     {isLogged &&
                         <li>
-                            <Link className='hover:text-[#fdfdfd]' href="/weekly-chats">Chats</Link>
+                            <Link className='hover:text-[#fdfdfd]' href="/weekly-chats">TextoTipos</Link>
                         </li>
                     }
 
                 </ul>
 
             </div>
-            <div className='p-10 md:flex sm:hidden  '>
 
+
+            <div className='p-10 md:p-5 md:flex sm:hidden  '>
+                <div className='hidden md:block'>
+                    {isLogged &&
+                        <Link className='hover:text-[#fdfdfd]' href="#">
+                            <Icon svg='logout' height='36px' width='36px' fillColor={"white"} classNam='relative z-20' strokeColor='#FFF' />
+                        </Link>
+                    }
+                    {!isLogged &&
+                        <Link className='hover:text-[#fdfdfd]' href="/login">
+                            <Icon svg='login' height='36px' width='36px' fillColor={"white"} classNam='relative z-20' strokeColor='#FFF' />
+                        </Link>
+                    }
+                </div>
             </div>
 
 

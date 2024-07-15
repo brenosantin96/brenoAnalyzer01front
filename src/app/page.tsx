@@ -2,6 +2,7 @@
 
 import { useApi } from '@/api/api';
 import Navbar from '@/components/Navbar';
+import { useAuthContext } from '@/contexts/Auth/AuthContext';
 import { useIncidentContext } from '@/contexts/IncidentContext';
 import { Chat } from '@/types/Chat';
 import { Incident } from '@/types/Incident';
@@ -19,6 +20,7 @@ const Home = () => {
 
   //context
   const incidentContext = useIncidentContext();
+  const userContext = useAuthContext()
 
   //api
   const api = useApi();
@@ -273,10 +275,6 @@ const Home = () => {
 
         <div className={`h-screen w-full absolute ${isMovingOverDropArea ? 'flex ' : 'hidden '}justify-center items-center bg-[#000]/[.8] text-[#c9c3c3] z-30 text-7xl`} onDragLeave={handleDragLeave} onDrop={handleDrop}>Drop it now!</div>
 
-        <div>TESTE</div>
-
-
-
         <div className='container h-screen mx-auto overflow-auto'>
           <div className='flex flex-col justify-center items-center h-screen'>
             <h1 className='text-3xl -mt-48 mb-12 md:text-4xl font-inter font-bold p-3 text-center text-white '>Importe el fichero excel para empezar el análisis</h1>
@@ -291,6 +289,7 @@ const Home = () => {
 
 
       </div>
+      <div>{userContext ? `${userContext.user?.name}` : ""}</div>
 
     </>
   )
