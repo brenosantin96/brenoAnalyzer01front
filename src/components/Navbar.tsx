@@ -27,7 +27,7 @@ const Navbar = () => {
 
 
     return (
-        <nav className={`flex justify-between items-center mx-auto bg-[#006989] px-3 shadow-3xl mt-[-1px] relative z-10`}>
+        <nav className={`fixed top-0 left-0 right-0 flex justify-between items-center mx-auto bg-[#006989] px-3 shadow-3xl mt-[-1px] z-10`}>
             <div className='flex items-center'> {/* Div principal */}
                 <Link href={'/'}>
                     <div className='flex justify-center items-center cursor-pointer'>
@@ -79,7 +79,7 @@ const Navbar = () => {
                     </li>
                     {isLogged &&
                         <li>
-                            <Link className='hover:text-[#fdfdfd]' href="/weekly-chats">TextoTipos</Link>
+                            <Link className='hover:text-[#fdfdfd]' href="/helptexts">TextoTipos</Link>
                         </li>
                     }
 

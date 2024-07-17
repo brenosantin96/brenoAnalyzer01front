@@ -14,6 +14,13 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
         'bg-login-background': "url('/assets/bgloginpagez.svg')",
       },
+      fontSize: {
+        'xxs': ['10px', {
+          lineHeight: '10px',
+          letterSpacing: '0.1px',
+          fontWeight: '400',
+        }],
+      },
       colors: {
 
         'ice-dark-blue': '#13293d',
