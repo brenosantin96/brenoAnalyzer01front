@@ -29,9 +29,11 @@ const config: Config = {
         'ice-lightblue': '#1b98e0',
         'ice-white': '#e8f1f2',
         'ice-graybackground': '#A3BAC3',
+        'grey-table' : '#EDEDED'
 
       },
       fontFamily: {
+        'arial': ['Arial', 'sans-serif'],
         'inter': ['Inter', 'sans-serif'],
         'golos': ['Golos Text', 'sans-serif'],
         'poppins': ['Poppins', 'sans-serif'],
