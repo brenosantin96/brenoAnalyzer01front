@@ -4,7 +4,11 @@ import { Icon } from './Icon/Icon'
 import Link from 'next/link';
 import { useAuthContext } from '@/contexts/Auth/AuthContext';
 
-const Navbar = () => {
+type PropsNavBar = {
+    onClick? : () => void
+}
+
+const Navbar = ({onClick}: PropsNavBar) => {
 
     const [isMenuOpened, setIsMenuOpened] = useState(false);
 
@@ -27,7 +31,7 @@ const Navbar = () => {
 
 
     return (
-        <nav className={`fixed top-0 left-0 right-0 flex justify-between items-center mx-auto bg-[#006989] px-3 shadow-3xl mt-[-1px] z-10`}>
+        <nav onClick={onClick} className={`fixed top-0 left-0 right-0 flex justify-between items-center mx-auto bg-[#006989] px-3 shadow-3xl mt-[-1px] z-10`}>
             <div className='flex items-center'> {/* Div principal */}
                 <Link href={'/'}>
                     <div className='flex justify-center items-center cursor-pointer'>
