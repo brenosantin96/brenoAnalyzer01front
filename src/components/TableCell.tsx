@@ -1,38 +1,53 @@
 import React, { useState } from 'react';
 
 type Props = {
-    value: string;
-    isSelected: boolean;
-    onClick: () => void;
-    onChange: (newValue: string) => void;
+  value: string;
+  isSelected: boolean;
+  onClick: () => void;
+  onChange: (newValue: string) => void;
+  width: string;
+  bgColor: string;
+  fontSize: string;
+  evenOrOddColor: 0 | 1; //estou colocando aqui porque de algum modo da bug ao aplicar na ROW....
 }
 
-const TableCell = ({ value, isSelected, onClick, onChange } : Props) => {
+const TableCell = ({ value, isSelected, onClick, onChange, width, bgColor, fontSize, evenOrOddColor }: Props) => {
 
   const [isEditing, setIsEditing] = useState(false);
 
   const handleDoubleClick = () => {
     setIsEditing(true);
   };
-  
+
   const handleBlur = () => {
     //The onblur event occurs when an HTML element loses focus
     setIsEditing(false);
   };
 
 
-  const handleChange = (e : React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
 
+
+  //retorno condicional uma div normal se nao estiver editando, se estiver editando retornamos um input....
+
   return (
     <div
-      className={`min-w-[154px] pl-2 flex items-center text-left ${isSelected ? 'border-blue-600 border-2' : 'border border-gray-400'}`}
+      className={`${width} ${bgColor} ${fontSize} text-[#5A5A5A] text-wrap flex items-center text-left 
+      ${isSelected ? 'border-gray-600 border-2' : 'border border-gray-400'}
+      ${evenOrOddColor === 0 ? "bg-gray-300" : "bg-gray-100"}
+      ${isEditing ? "pl-0" : "pl-2"}
+      `}
+
+
       onClick={onClick}
       onDoubleClick={handleDoubleClick}
+
     >
       {isEditing ? (
         <input
+          className={`h-[79px] ${width} outline-none`}
           type="text"
           value={value}
           onChange={handleChange}
