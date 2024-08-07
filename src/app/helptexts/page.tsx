@@ -19,7 +19,7 @@ const HelpTexts = () => {
         <>
             <Navbar onClick={() => setSelectActive(false)} />
 
-            <div className='bg-[#C2D1DF] overflow-y-hidden'>
+            <div className='bg-[#C2D1DF]'>
                 <Table/>
             </div>
         </>

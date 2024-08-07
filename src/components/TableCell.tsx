@@ -36,7 +36,7 @@ const TableCell = ({ value, isSelected, onClick, onChange, width, bgColor, fontS
     <div
       className={`${width} ${bgColor} ${fontSize} text-[#5A5A5A] text-wrap flex items-center text-left 
       ${isSelected ? 'border-gray-600 border-2' : 'border border-gray-400'}
-      ${evenOrOddColor === 0 ? "bg-gray-300" : "bg-gray-100"}
+      ${evenOrOddColor === 0 ? "bg-gray-300" : "bg-white"}
       ${isEditing ? "pl-0" : "pl-2"}
       `}
 

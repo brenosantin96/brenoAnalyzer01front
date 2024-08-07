@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Row from './TableRow';
 import { columnWidths } from '@/utils/TableTextsUtils';
+import { Icon } from './Icon/Icon';
 
 type SelectedCell = { row: number | null, col: number | null };
 
@@ -27,33 +28,68 @@ const Table = () => {
   };
 
 
-  
 
-  //Evento de controle do teclado
-  const controlKeypadMovement = (arrowKey : KeyboardEvent) => {
-    
-    if(arrowKey.key === "up"){
-      
+
+  // Evento de controle do teclado
+  const controlKeypadMovement = (event: KeyboardEvent) => {
+    let newSelectedCell = { ...selectedCell };
+
+    switch (event.key) {
+      case 'ArrowUp':
+        if (selectedCell.row! > 0) {
+          newSelectedCell.row = selectedCell.row! - 1;
+        }
+        break;
+      case 'ArrowDown':
+        if (selectedCell.row! < tableData.length - 1) {
+          newSelectedCell.row = selectedCell.row! + 1;
+        }
+        break;
+      case 'ArrowLeft':
+        if (selectedCell.col! > 0) {
+          newSelectedCell.col = selectedCell.col! - 1;
+        }
+        break;
+      case 'ArrowRight':
+        if (selectedCell.col! < tableData[0].length - 1) {
+          newSelectedCell.col = selectedCell.col! + 1;
+        }
+        break;
+      default:
+        break;
     }
-    if(arrowKey.key === "right"){
-      
-    }
-    if(arrowKey.key === "down"){
-      
-    }
-    if(arrowKey.key === "left"){
-      
-    }
-    
+
+    setSelectedCell(newSelectedCell);
+  };
+
+  const addLineToTable = () => {
+
+    const newLine = ["", "", "", "", "", ""];
+    let newTableData = [...tableData, newLine];
+
+    setTableData(newTableData);
 
   }
+  
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      controlKeypadMovement(event);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selectedCell]);
 
 
 
   return (
-    <div className='bg-[#C2D1DF] overflow-y-hidden' onKeyUp={() => controlKeypadMovement}>
+    <div className='bg-[#C2D1DF]' onKeyUp={() => controlKeypadMovement}>
 
-      <div className='mt-[75px] bg-[#C2D1DF] overflow-y-hidden'>
+      <div className='mt-[75px] bg-[#C2D1DF]'>
         <ul className='ml-2 flex gap-4 font-bold text-[#5A5A5A] '>
           <li>
             <a className='hover:text-[#006989]' href="#">Pte. conf. usuario</a>
@@ -96,6 +132,11 @@ const Table = () => {
             widths={columnWidths}
           />
         ))}
+
+        <div onClick={addLineToTable} className='pl-5 pt-5'>
+          <Icon svg='plusIcon' height='40px' width='40px' fillColor='#A0A0A0' />
+        </div>
+
       </div>
     </div>
   );

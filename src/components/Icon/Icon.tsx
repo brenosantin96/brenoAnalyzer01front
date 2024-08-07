@@ -6,6 +6,7 @@ import LoginSVG from './LoginSVG'
 import { SVGPassword } from './SVGPassword'
 import { SVGperson } from './SVGperson'
 import LogoutSVG from './LogoutSVG'
+import { PlusIconSVG } from './PlusIconSVG'
 
 type Props = {
     svg: string;
@@ -27,6 +28,7 @@ export const Icon = ({ svg, width, height, fillColor, strokeColor, classNam }: P
             {svg === "logout" && <LogoutSVG height={height} width={width} fillColor={fillColor} />}
             {svg === "key" && <SVGPassword height={height} width={width} />}
             {svg === "person" && <SVGperson height={height} width={width} />}
+            {svg === "plusIcon" && <PlusIconSVG height={height} width={width} fillColor={fillColor} />}
         </div>
     )
 }
