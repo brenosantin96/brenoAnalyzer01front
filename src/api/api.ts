@@ -33,7 +33,27 @@ export const useApi = (token?: string) => ({
             const axiosError = error as AxiosErrorResponse;
             return { error: axiosError.response?.data.error || axiosError.message };
         }
+    },
+
+    getInc_Vs_Ritm_Texts: async () => {
+
+
+        if(token){
+            console.log("Estou dentro da funcao e da funcao tenho acesso ao token: ", token)
+        }
+
+        try {
+            const response = await axios.get(`${baseURL}/api/inc_vs_ritm_texts` );
+            return response.data;
+        } catch (error) {
+            const axiosError = error as AxiosErrorResponse;
+            return { error: axiosError.response?.data.error || axiosError.message };
+        }
     }
+
+    //Farei depois o create, update, delete no front, nao preocupar com isso agora.
+
+
 
     
 });
