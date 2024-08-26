@@ -1,14 +1,12 @@
+"use client"
 import React, { useEffect, useState } from 'react'
 import NavBarStyle from './NavBarStyle.module.css'
 import { Icon } from './Icon/Icon'
 import Link from 'next/link';
 import { useAuthContext } from '@/contexts/Auth/AuthContext';
 
-type PropsNavBar = {
-    onClick? : () => void
-}
 
-const Navbar = ({onClick}: PropsNavBar) => {
+const Navbar = () => {
 
     const [isMenuOpened, setIsMenuOpened] = useState(false);
 
@@ -31,7 +29,7 @@ const Navbar = ({onClick}: PropsNavBar) => {
 
 
     return (
-        <nav onClick={onClick} className={`fixed top-0 left-0 right-0 flex justify-between items-center mx-auto bg-[#006989] px-3 shadow-3xl mt-[-1px] z-10`}>
+        <nav className={`fixed top-0 left-0 right-0 flex justify-between items-center mx-auto bg-[#006989] px-3 shadow-3xl mt-[-1px] z-10`}>
             <div className='flex items-center'> {/* Div principal */}
                 <Link href={'/'}>
                     <div className='flex justify-center items-center cursor-pointer'>
