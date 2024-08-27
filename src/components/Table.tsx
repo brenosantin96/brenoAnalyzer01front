@@ -1,25 +1,32 @@
-"use client"
-import React, { useEffect, useState } from 'react';
-import Row from './TableRow';
-import { columnWidths } from '@/utils/TableTextsUtils';
-import { Icon } from './Icon/Icon';
+"use client";
+import React, { useEffect, useState } from "react";
+import Row from "./TableRow";
+import { columnWidths } from "@/utils/TableTextsUtils";
+import { Icon } from "./Icon/Icon";
+import { Inc_vs_ritm_text } from "@/types/Inc_vs_ritm_text_type";
 
-type SelectedCell = { row: number | null, col: number | null };
+type SelectedCell = { row: number | null; col: number | null };
 
-const Table = () => {
+type PropsTable = {
+  data_to_table: Inc_vs_ritm_text[];
+};
 
-  const initialData = [
-    ['Cuenta usuario', 'Accesos usuarios nuevos (Interno)', 'Texto....', 'Texto....', '//notiene', ''],
-    ['Cuenta usuario', 'Accesos usuarios nuevos (Interno)', 'Texto....', 'Texto....', '//notiene', ''],
-    ['Cuenta usuario', 'Accesos usuarios nuevos (Interno)', 'Texto....', 'Texto....', '//notiene', ''],
-    ['Cuenta usuario', 'Accesos usuarios nuevos (Interno)', 'Texto....', 'Texto....', '//notiene', ''],
-    ['Cuenta usuario', 'Accesos usuarios nuevos (Interno)', 'Texto....', 'Texto....', '//notiene', ''],
-    // Adicione mais linhas conforme necessário
-  ];
+const Table = ({ data_to_table }: PropsTable) => {
+  
+  const convertDataToTableData = (data: Inc_vs_ritm_text[]): string[][] => {
+    return data.map((item) => [
+      item.platform,
+      item.casuistry,
+      item.type_spanish,
+      item.type_english,
+      item.shortcut,
+      item.kb_article,
+    ]);
+  };
 
+  const initialTableData = convertDataToTableData(data_to_table);
 
-
-  const [tableData, setTableData] = useState<string[][]>(initialData);
+  const [tableData, setTableData] = useState<string[][]>(initialTableData);
   const [selectedCell, setSelectedCell] = useState<SelectedCell>({ row: null, col: null });
 
   const updateCell = (rowIndex: number, cellIndex: number, newValue: string) => {
@@ -28,30 +35,26 @@ const Table = () => {
     setTableData(newTableData);
   };
 
-
-
-
-  // Evento de controle do teclado
   const controlKeypadMovement = (event: KeyboardEvent) => {
     let newSelectedCell = { ...selectedCell };
 
     switch (event.key) {
-      case 'ArrowUp':
+      case "ArrowUp":
         if (selectedCell.row! > 0) {
           newSelectedCell.row = selectedCell.row! - 1;
         }
         break;
-      case 'ArrowDown':
+      case "ArrowDown":
         if (selectedCell.row! < tableData.length - 1) {
           newSelectedCell.row = selectedCell.row! + 1;
         }
         break;
-      case 'ArrowLeft':
+      case "ArrowLeft":
         if (selectedCell.col! > 0) {
           newSelectedCell.col = selectedCell.col! - 1;
         }
         break;
-      case 'ArrowRight':
+      case "ArrowRight":
         if (selectedCell.col! < tableData[0].length - 1) {
           newSelectedCell.col = selectedCell.col! + 1;
         }
@@ -64,58 +67,68 @@ const Table = () => {
   };
 
   const addLineToTable = () => {
-
     const newLine = ["", "", "", "", "", ""];
-    let newTableData = [...tableData, newLine];
-
+    const newTableData = [...tableData, newLine];
     setTableData(newTableData);
-
-  }
-  
+  };
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       controlKeypadMovement(event);
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [selectedCell]);
 
-
-
   return (
-    <div className='bg-[#C2D1DF]' onKeyUp={() => controlKeypadMovement}>
-
-      <div className='mt-[75px] bg-[#C2D1DF]'>
-        <ul className='ml-2 flex gap-4 font-bold text-[#5A5A5A] '>
+    <div className="bg-[#C2D1DF]" onKeyUp={() => controlKeypadMovement}>
+      <div className="mt-[75px] bg-[#C2D1DF]">
+        <ul className="ml-2 flex gap-4 font-bold text-[#5A5A5A] ">
           <li>
-            <a className='hover:text-[#006989]' href="#">Pte. conf. usuario</a>
+            <a className="hover:text-[#006989]" href="#">
+              Pte. conf. usuario
+            </a>
           </li>
           <li>
-            <a className='hover:text-[#006989]' href="#">INC vs RITM</a>
+            <a className="hover:text-[#006989]" href="#">
+              INC vs RITM
+            </a>
           </li>
           <li>
-            <a className='hover:text-[#006989]' href="#">TEMP</a>
+            <a className="hover:text-[#006989]" href="#">
+              TEMP
+            </a>
           </li>
         </ul>
       </div>
 
-
-      <div className='pl-2 bg-[#C2D1DF] text-[#5A5A5A] h-screen overflow-x-scroll overflow-y-hidden whitespace-nowrap'>
-
-        <div className='flex justify-start h-[80px] flex-row w-max text-[22px] text-left gap-0 font-arial font-bold text-white'>
-          <div className={`min-w-[154px] pl-2 flex items-center text-left border border-gray-400  bg-[#A5A5A5]`}>Plataforma</div>
-          <div className='min-w-[190px] pl-2 flex items-center text-left  border-gray-400 bg-[#A5A5A5]'>Casuística</div>
-          <div className='min-w-[810px] pl-2 flex items-center text-left border-gray-400 bg-[#A5A5A5]'>Texto Tipo ESP</div>
-          <div className='min-w-[810px] pl-2 flex items-center text-left border-gray-400 bg-[#A5A5A5]'>Texto Tipo ENG</div>
-          <div className='min-w-[330px] pl-2 flex items-center text-left  border-gray-400 bg-[#A5A5A5] font-golos font-bold'>Shortcut</div>
-          <div className='min-w-[154px] pl-2 flex items-center text-left  border-gray-400 bg-[#A5A5A5]'>KB Tecnico</div>
+      <div className="pl-2 bg-[#C2D1DF] text-[#5A5A5A] h-screen overflow-x-scroll overflow-y-hidden whitespace-nowrap">
+        <div className="flex justify-start h-[80px] flex-row w-max text-[22px] text-left gap-0 font-arial font-bold text-white">
+          <div
+            className={`min-w-[154px] pl-2 flex items-center text-left border border-gray-400  bg-[#A5A5A5]`}
+          >
+            Plataforma
+          </div>
+          <div className="min-w-[190px] pl-2 flex items-center text-left  border-gray-400 bg-[#A5A5A5]">
+            Casuística
+          </div>
+          <div className="min-w-[810px] pl-2 flex items-center text-left border-gray-400 bg-[#A5A5A5]">
+            Texto Tipo ESP
+          </div>
+          <div className="min-w-[810px] pl-2 flex items-center text-left border-gray-400 bg-[#A5A5A5]">
+            Texto Tipo ENG
+          </div>
+          <div className="min-w-[330px] pl-2 flex items-center text-left  border-gray-400 bg-[#A5A5A5] font-golos font-bold">
+            Shortcut
+          </div>
+          <div className="min-w-[154px] pl-2 flex items-center text-left  border-gray-400 bg-[#A5A5A5]">
+            KB Tecnico
+          </div>
         </div>
-
 
         {tableData.map((rowData, rowIndex) => (
           <Row
@@ -134,10 +147,9 @@ const Table = () => {
           />
         ))}
 
-        <div onClick={addLineToTable} className='pl-5 pt-5'>
-          <Icon svg='plusIcon' height='40px' width='40px' fillColor='#A0A0A0' />
+        <div onClick={addLineToTable} className="pl-5 pt-5">
+          <Icon svg="plusIcon" height="40px" width="40px" fillColor="#A0A0A0" />
         </div>
-
       </div>
     </div>
   );

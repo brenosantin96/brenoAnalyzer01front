@@ -27,7 +27,7 @@ const HelpTexts = async () => {
             <Navbar />
 
             <div className='bg-[#C2D1DF]'>
-                <Table />
+                <Table data_to_table={allTableData} />
             </div>
         </>
     )

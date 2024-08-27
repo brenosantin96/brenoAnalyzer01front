@@ -3,6 +3,7 @@ import { User } from "./User";
 export type Inc_vs_ritm_text = {
 
     id : number;
+    rowIndex : number;
     platform : string;
     casuistry: string;
     type_spanish: string;
