@@ -4,9 +4,13 @@ import NavBarStyle from './NavBarStyle.module.css'
 import { Icon } from './Icon/Icon'
 import Link from 'next/link';
 import { useAuthContext } from '@/contexts/Auth/AuthContext';
+import { User, UserLogged } from '@/types/User';
 
+type PropsNavbar = {
+    userLogged? : UserLogged | undefined
+}
 
-const Navbar = () => {
+const Navbar = ({userLogged} : PropsNavbar) => {
 
     const [isMenuOpened, setIsMenuOpened] = useState(false);
 
@@ -17,7 +21,7 @@ const Navbar = () => {
     const [isLogged, setIsLogged] = useState(false);
     const authContext = useAuthContext();
 
-    useEffect(() => {
+     useEffect(() => {
         setIsLogged(authContext.user !== null);
         console.log(authContext)
     }, [authContext.user]);
@@ -25,7 +29,7 @@ const Navbar = () => {
 
     useEffect(()=> {
         console.log(isLogged)
-    }, [isLogged])
+    }, [isLogged]) 
 
 
     return (

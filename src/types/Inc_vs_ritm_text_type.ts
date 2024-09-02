@@ -2,7 +2,7 @@ import { User } from "./User";
 
 export type Inc_vs_ritm_text = {
 
-    id : number;
+    id : string;
     rowIndex : number;
     platform : string;
     casuistry: string;

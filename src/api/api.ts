@@ -42,18 +42,28 @@ export const useApi = (token?: string) => ({
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 }
-            } );
+            });
             return response.data;
         } catch (error) {
             const axiosError = error as AxiosErrorResponse;
             return { error: axiosError.response?.data.error || axiosError.message };
         }
+    },
+
+    getUserLogged: async () => {
+        try {
+            const response = await axios.get(`${baseURL}/api/getuserlogged`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+            return response.data;
+        } catch (error) {
+            const axiosError = error as AxiosErrorResponse;
+            return undefined;
+            //return { error: axiosError.response?.data.error || axiosError.message };
+        }
     }
 
-    //Farei depois o create, update, delete no front, nao preocupar com isso agora.
-
-
-
-    
 });
 

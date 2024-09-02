@@ -5,3 +5,8 @@ export type User = {
     isAdmin: boolean;
     profilePic?: string;
 }
+
+export type UserLogged = {
+    id: number, 
+    email: string
+}

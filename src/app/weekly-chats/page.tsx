@@ -9,10 +9,13 @@ import { getAllChatsByTechnician, getExpiredChatName, getExpiredPorcent, getQuan
 import * as XLSX from 'xlsx';
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
+import { useAuthContext } from '@/contexts/Auth/AuthContext';
+import { User } from '@/types/User';
 
 const WeeklyChats = () => {
     //context
     const incidentContext = useIncidentContext();
+    const auth = useAuthContext();
 
     const [chatsByTechnician, setChatsByTechnician] = useState<ExpiredChatsConversationByTechnician[]>([])
 
@@ -84,10 +87,10 @@ const WeeklyChats = () => {
         <>
 
 
-            <Navbar />
+            <Navbar/>
 
             <div className={`${incidentContext && incidentContext.chats.length === 0 ? 'h-screen ' : ' '} md:h-screen flex flex-col 
-            justify-center items-center md:flex-row md:justify-start md:items-start mt-2 md:mt-0 bg-[#EAEBED] w-full`}>
+            justify-center items-center md:flex-row md:justify-start md:items-start pt-[75px] md:mt-0 bg-[#EAEBED] w-full`}>
 
                 {incidentContext && incidentContext.chats.length === 0 &&
 

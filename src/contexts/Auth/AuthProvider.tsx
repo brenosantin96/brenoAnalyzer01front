@@ -4,7 +4,7 @@ import { User } from "@/types/User";
 import { useState, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 import { ProviderType } from "./Types";
-import { setCookie } from 'cookies-next';
+import { getCookie, setCookie } from 'cookies-next';
 import axios, { AxiosInstance } from "axios";
 import { useApi } from "@/api/api";
 
@@ -20,8 +20,31 @@ export const AuthProvider = ({ children }: ProviderType) => {
   const api = useApi();
 
 
+  useEffect(() => {
+    const storedToken = getCookie("token") || localStorage.getItem("token");
+    console.log("stored TOKEN: ", storedToken)
+    if (storedToken) {
+      //entrou no useEffect
+      handleToken(storedToken as string);
+      validateUser(storedToken as string);
+    }
+  }, []);
+
+  const validateUser = async (token: string) => {
+    const userLogged = await api.getUserLogged();
+    console.log("userLogged validate user: ", userLogged)
+    if (userLogged) {
+      setUser(userLogged);
+    } else {
+      // Limpa o token caso não seja válido
+      handleToken("");
+      setUser(null);
+    }
+  };
+
   const signOut = async () => {
-  
+    handleToken("");
+    setUser(null);
   };
 
   const handleToken = async (tokenString: string) => {
@@ -31,7 +54,7 @@ export const AuthProvider = ({ children }: ProviderType) => {
   };
 
   const isLogged = () => {
-    return token ? true : false;
+    return !!token && !!user;
   };
 
   const signIn = async (email: string, passwordReq: string) => {

@@ -8,12 +8,15 @@ import TableEx from '@/components/TableEx';
 import { getAllPendingTickets2 } from '@/utils/IncidentsFunctions';
 import { PendingTicketsIncidents } from '@/types/PendingIncident';
 import Link from 'next/link';
+import { useAuthContext } from '@/contexts/Auth/AuthContext';
+import { User } from '@/types/User';
 
 
 const PendingRequests = () => {
 
     //context
     const incidentContext = useIncidentContext();
+    const auth = useAuthContext();
 
     const [allPendingTickets, setAllPendingTickets] = useState<PendingTicketsIncidents[]>([])
     const [techPendingTickets, setTechPendingTickets] = useState<PendingTicketsIncidents>()
@@ -60,11 +63,11 @@ const PendingRequests = () => {
     return (
 
         <>
-            <Navbar />
+            <Navbar/>
             {incidentContext !== null &&
 
 
-                <div className={`${allPendingTickets.length === 0 ? 'h-screen ' : ' '} md:h-screen flex flex-col justify-center items-center md:flex-row md:justify-start md:items-start mt-2 md:mt-0 bg-[#EAEBED] w-full`}>
+                <div className={`${allPendingTickets.length === 0 ? 'h-screen ' : ' '} md:h-screen flex flex-col justify-center items-center md:flex-row md:justify-start md:items-start pt-[75px] md:mt-0 bg-[#EAEBED] w-full`}>
                     
                     {allPendingTickets.length === 0 &&
                         <div className='mx-5 text-center w-full h-3/4 flex flex-col justify-center items-center'>

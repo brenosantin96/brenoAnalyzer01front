@@ -4,6 +4,10 @@ import Row from "./TableRow";
 import { columnWidths } from "@/utils/TableTextsUtils";
 import { Icon } from "./Icon/Icon";
 import { Inc_vs_ritm_text } from "@/types/Inc_vs_ritm_text_type";
+import { useAuthContext } from "@/contexts/Auth/AuthContext";
+import { User } from "@/types/User";
+import { v4 as uuidv4 } from 'uuid';
+
 
 type SelectedCell = { row: number | null; col: number | null };
 
@@ -12,6 +16,10 @@ type PropsTable = {
 };
 
 const Table = ({ data_to_table }: PropsTable) => {
+
+
+  const authContext = useAuthContext();
+
   
   const convertDataToTableData = (data: Inc_vs_ritm_text[]): string[][] => {
     return data.map((item) => [
@@ -23,6 +31,27 @@ const Table = ({ data_to_table }: PropsTable) => {
       item.kb_article,
     ]);
   };
+
+  const convertTableDataToData = (dataTable: string[][]): Inc_vs_ritm_text[] => {
+    return dataTable.map((row, index) => ({ //row is same as item.
+      id: uuidv4(), 
+      rowIndex: index,
+      platform: row[0],
+    
+      casuistry: row[1],
+      type_spanish: row[2],
+      type_english: row[3],
+      shortcut: row[4],
+      kb_article: row[5],
+      created_by: authContext.user as User, // adicionar valores de User
+      last_edition_by: authContext.user as User, // adicionar valores de User
+      created_at: new Date(),
+      last_edited_at: new Date(),
+      createdById: 1,
+      lastEditedById: 1,
+    }));
+  };
+
 
   const initialTableData = convertDataToTableData(data_to_table);
 
@@ -106,7 +135,7 @@ const Table = ({ data_to_table }: PropsTable) => {
         </ul>
       </div>
 
-      <div className="pl-2 bg-[#C2D1DF] text-[#5A5A5A] h-screen overflow-x-scroll overflow-y-hidden whitespace-nowrap">
+      <div className="pl-2 bg-[#C2D1DF] text-[#5A5A5A] whitespace-nowrap">
         <div className="flex justify-start h-[80px] flex-row w-max text-[22px] text-left gap-0 font-arial font-bold text-white">
           <div
             className={`min-w-[154px] pl-2 flex items-center text-left border border-gray-400  bg-[#A5A5A5]`}
@@ -147,7 +176,7 @@ const Table = ({ data_to_table }: PropsTable) => {
           />
         ))}
 
-        <div onClick={addLineToTable} className="pl-5 pt-5">
+        <div onClick={addLineToTable} className="pl-2 py-2 max-w-20 flex justify-center items-center bg-red-300">
           <Icon svg="plusIcon" height="40px" width="40px" fillColor="#A0A0A0" />
         </div>
       </div>
