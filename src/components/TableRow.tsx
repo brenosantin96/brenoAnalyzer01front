@@ -18,15 +18,6 @@ type RowProps = {
 const TableRow = ({ rowData, rowIndex, selectedCell, setSelectedCell, updateCell, textColor, fontSize, fontWeight, widths, lineHeight, evenOrOddColor }: RowProps) => {
 
 
-  useEffect(() => {
-    console.log("rowData", rowData)
-  }, [rowData])
-
-  useEffect(() => {
-    console.log("evenOrOddColor ROW", evenOrOddColor)
-  }, [rowData])
-
-
   return (
     <div className={`flex flex-row ${lineHeight} ${textColor} ${fontSize} ${fontWeight}`}>
 

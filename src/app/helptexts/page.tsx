@@ -1,12 +1,9 @@
 import { useApi } from '@/api/api'
 import Navbar from '@/components/Navbar'
 import Table from '@/components/Table'
-import { Inc_vs_ritm_text } from '@/types/Inc_vs_ritm_text_type'
 import React, { useEffect, useState } from 'react'
 import { redirect } from 'next/navigation' // Usado para redirecionar o usuário
 import { cookies } from 'next/headers'
-import { useAuthContext } from '@/contexts/Auth/AuthContext'
-import { User } from '@/types/User'
 
 //SERVER COMPONENT
 const HelpTexts = async () => {
@@ -26,9 +23,9 @@ const HelpTexts = async () => {
 
     return (
         <>
-            <Navbar userLogged={undefined}/>
+            <Navbar/>
 
-            <div className='bg-[#C2D1DF]'>
+            <div>
                 <Table data_to_table={allTableData} />
             </div>
         </>

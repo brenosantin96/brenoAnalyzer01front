@@ -5,14 +5,13 @@ import { Icon } from './Icon/Icon'
 import Link from 'next/link';
 import { useAuthContext } from '@/contexts/Auth/AuthContext';
 import { User, UserLogged } from '@/types/User';
+import { useRouter } from 'next/navigation';
 
-type PropsNavbar = {
-    userLogged? : UserLogged | undefined
-}
 
-const Navbar = ({userLogged} : PropsNavbar) => {
+const Navbar = () => {
 
     const [isMenuOpened, setIsMenuOpened] = useState(false);
+    const router = useRouter();
 
     const handleToggleMenu = () => {
         setIsMenuOpened(!isMenuOpened)
@@ -21,15 +20,21 @@ const Navbar = ({userLogged} : PropsNavbar) => {
     const [isLogged, setIsLogged] = useState(false);
     const authContext = useAuthContext();
 
-     useEffect(() => {
+    useEffect(() => {
         setIsLogged(authContext.user !== null);
-        console.log(authContext)
+        console.log("NAVBAR: ", authContext)
     }, [authContext.user]);
-    
 
-    useEffect(()=> {
+
+    useEffect(() => {
         console.log(isLogged)
-    }, [isLogged]) 
+    }, [isLogged])
+
+    const signOut = () => {
+        console.log("SIGNING OUT!")
+        authContext.signOut();
+        router.push("/")
+    }
 
 
     return (
@@ -45,7 +50,7 @@ const Navbar = ({userLogged} : PropsNavbar) => {
                 </Link>
 
                 {/* Essa div so aparece em dispositivos menores que md */}
-                <div className={`md:hidden md:static absolute bg-[#006989] md:min-h-fit  left-0 ${isMenuOpened ? `top-[8%]` : `top-[-300%]`} ease-in-out duration-300 md:w-auto w-full flex items-center md:px-5`}>
+                <div className={`md:hidden md:static absolute bg-[#006989] md:min-h-fit  left-0 ${isMenuOpened ? `top-[8%]` : `top-[-350%]`} ease-in-out duration-300 md:w-auto w-full flex items-center md:px-5`}>
                     <ul className='flex md:flex-row flex-col md:items-center md:gap-4 gap-6 py-4 text-xl ml-6 text-[#EAEBED] '> {/* Lista de itens da navbar */}
                         {!isLogged &&
                             <li>
@@ -53,7 +58,7 @@ const Navbar = ({userLogged} : PropsNavbar) => {
                             </li>
                         }
                         {isLogged &&
-                            <li>
+                            <li onClick={signOut}>
                                 <Link className='hover:text-[#fdfdfd]' href="/weekly-chats">Salir</Link>
                             </li>
                         }
@@ -66,6 +71,11 @@ const Navbar = ({userLogged} : PropsNavbar) => {
                         <li>
                             <Link className='hover:text-[#fdfdfd]' href="/weekly-chats">Chats</Link>
                         </li>
+                        {isLogged &&
+                        <li>
+                            <Link className='hover:text-[#fdfdfd]' href="/helptexts">TextoTipos</Link>
+                        </li>
+                    }
                     </ul>
 
                 </div>
@@ -97,14 +107,18 @@ const Navbar = ({userLogged} : PropsNavbar) => {
             <div className='p-10 md:p-5 md:flex sm:hidden  '>
                 <div className='hidden md:block'>
                     {isLogged &&
-                        <Link className='hover:text-[#fdfdfd]' href="#">
-                            <Icon svg='logout' height='36px' width='36px' fillColor={"white"} classNam='relative z-20' strokeColor='#FFF' />
-                        </Link>
+                        <div onClick={signOut}>
+                            <Link className='hover:text-[#fdfdfd]' href="#">
+                                <Icon svg='logout' height='36px' width='36px' fillColor={"white"} classNam='relative z-20' strokeColor='#FFF' />
+                            </Link>
+                        </div>
                     }
                     {!isLogged &&
-                        <Link className='hover:text-[#fdfdfd]' href="/login">
-                            <Icon svg='login' height='36px' width='36px' fillColor={"white"} classNam='relative z-20' strokeColor='#FFF' />
-                        </Link>
+                        <div>
+                            <Link className='hover:text-[#fdfdfd]' href="/login">
+                                <Icon svg='login' height='36px' width='36px' fillColor={"white"} classNam='relative z-20' strokeColor='#FFF' />
+                            </Link>
+                        </div>
                     }
                 </div>
             </div>

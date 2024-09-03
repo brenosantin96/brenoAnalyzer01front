@@ -279,10 +279,9 @@ const DropAreaButtonAreaMainPage = () => {
           <div className='md:block sm:hidden mt-8 text-center font-medium text-[#FAFAFA] text-2xl'>O arrastre el archivo .xls aquí</div>
         </div>
       </div>
-
-
-
     </div>
+
+    
 
   )
 

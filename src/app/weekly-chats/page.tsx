@@ -10,7 +10,6 @@ import * as XLSX from 'xlsx';
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { useAuthContext } from '@/contexts/Auth/AuthContext';
-import { User } from '@/types/User';
 
 const WeeklyChats = () => {
     //context

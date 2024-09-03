@@ -9,8 +9,6 @@ import { getAllPendingTickets2 } from '@/utils/IncidentsFunctions';
 import { PendingTicketsIncidents } from '@/types/PendingIncident';
 import Link from 'next/link';
 import { useAuthContext } from '@/contexts/Auth/AuthContext';
-import { User } from '@/types/User';
-
 
 const PendingIncidents = () => {
 

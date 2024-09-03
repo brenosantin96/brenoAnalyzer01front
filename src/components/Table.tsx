@@ -7,6 +7,7 @@ import { Inc_vs_ritm_text } from "@/types/Inc_vs_ritm_text_type";
 import { useAuthContext } from "@/contexts/Auth/AuthContext";
 import { User } from "@/types/User";
 import { v4 as uuidv4 } from 'uuid';
+import { useApi } from "@/api/api";
 
 
 type SelectedCell = { row: number | null; col: number | null };
@@ -19,8 +20,9 @@ const Table = ({ data_to_table }: PropsTable) => {
 
 
   const authContext = useAuthContext();
+  const api = useApi(authContext.token as string)
 
-  
+
   const convertDataToTableData = (data: Inc_vs_ritm_text[]): string[][] => {
     return data.map((item) => [
       item.platform,
@@ -34,10 +36,10 @@ const Table = ({ data_to_table }: PropsTable) => {
 
   const convertTableDataToData = (dataTable: string[][]): Inc_vs_ritm_text[] => {
     return dataTable.map((row, index) => ({ //row is same as item.
-      id: uuidv4(), 
+      id: uuidv4(),
       rowIndex: index,
       platform: row[0],
-    
+
       casuistry: row[1],
       type_spanish: row[2],
       type_english: row[3],
@@ -95,10 +97,26 @@ const Table = ({ data_to_table }: PropsTable) => {
     setSelectedCell(newSelectedCell);
   };
 
-  const addLineToTable = () => {
-    const newLine = ["", "", "", "", "", ""];
-    const newTableData = [...tableData, newLine];
-    setTableData(newTableData);
+  const addLineToTable = async () => {
+
+    if (authContext.user) {
+      const newLine = ["", "", "", "", "", ""];
+      const newTableData = [...tableData, newLine];
+
+      const newLineAddedDatabase = await api.create_Inc_Vs_Ritm_Texts(newLine[0], newLine[1]
+        , newLine[2], newLine[3], newLine[4], newLine[5])
+
+      if (newLineAddedDatabase) {
+        console.log(newLineAddedDatabase)
+        setTableData(newTableData);
+
+      }
+
+    }
+
+
+
+
   };
 
   useEffect(() => {
@@ -114,8 +132,8 @@ const Table = ({ data_to_table }: PropsTable) => {
   }, [selectedCell]);
 
   return (
-    <div className="bg-[#C2D1DF]" onKeyUp={() => controlKeypadMovement}>
-      <div className="mt-[75px] bg-[#C2D1DF]">
+    <div onKeyUp={() => controlKeypadMovement}>
+      <div className="mt-[75px]">
         <ul className="ml-2 flex gap-4 font-bold text-[#5A5A5A] ">
           <li>
             <a className="hover:text-[#006989]" href="#">
@@ -135,7 +153,7 @@ const Table = ({ data_to_table }: PropsTable) => {
         </ul>
       </div>
 
-      <div className="pl-2 bg-[#C2D1DF] text-[#5A5A5A] whitespace-nowrap">
+      <div className="pl-2 text-[#5A5A5A] whitespace-nowrap">
         <div className="flex justify-start h-[80px] flex-row w-max text-[22px] text-left gap-0 font-arial font-bold text-white">
           <div
             className={`min-w-[154px] pl-2 flex items-center text-left border border-gray-400  bg-[#A5A5A5]`}
