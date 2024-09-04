@@ -14,14 +14,21 @@ type SelectedCell = { row: number | null; col: number | null };
 
 type PropsTable = {
   data_to_table: Inc_vs_ritm_text[];
+  token : string | undefined;
+  userLogged: User | undefined;
 };
 
-const Table = ({ data_to_table }: PropsTable) => {
+const Table = ({ data_to_table, token, userLogged }: PropsTable) => {
 
 
-  const authContext = useAuthContext();
-  const api = useApi(authContext.token as string)
+  const api = useApi(token);
 
+  useEffect(()=> {
+  
+    console.log(userLogged)
+    console.log("userLogged?.id", userLogged?.id )
+    console.log("userLogged?.name", userLogged?.name )
+  },[])
 
   const convertDataToTableData = (data: Inc_vs_ritm_text[]): string[][] => {
     return data.map((item) => [
@@ -32,26 +39,6 @@ const Table = ({ data_to_table }: PropsTable) => {
       item.shortcut,
       item.kb_article,
     ]);
-  };
-
-  const convertTableDataToData = (dataTable: string[][]): Inc_vs_ritm_text[] => {
-    return dataTable.map((row, index) => ({ //row is same as item.
-      id: uuidv4(),
-      rowIndex: index,
-      platform: row[0],
-
-      casuistry: row[1],
-      type_spanish: row[2],
-      type_english: row[3],
-      shortcut: row[4],
-      kb_article: row[5],
-      created_by: authContext.user as User, // adicionar valores de User
-      last_edition_by: authContext.user as User, // adicionar valores de User
-      created_at: new Date(),
-      last_edited_at: new Date(),
-      createdById: 1,
-      lastEditedById: 1,
-    }));
   };
 
 
@@ -99,23 +86,25 @@ const Table = ({ data_to_table }: PropsTable) => {
 
   const addLineToTable = async () => {
 
-    if (authContext.user) {
+    if (userLogged) {
       const newLine = ["", "", "", "", "", ""];
       const newTableData = [...tableData, newLine];
 
+      console.log("authContext.user.id: ", userLogged.id)
+      console.log("authContext.user.name", userLogged.name)
+
+
       const newLineAddedDatabase = await api.create_Inc_Vs_Ritm_Texts(newLine[0], newLine[1]
-        , newLine[2], newLine[3], newLine[4], newLine[5])
+        , newLine[2], newLine[3], newLine[4], newLine[5], userLogged.id, userLogged.id)
+
+        console.log("newLineAddedDatabase: ",newLineAddedDatabase)
 
       if (newLineAddedDatabase) {
-        console.log(newLineAddedDatabase)
         setTableData(newTableData);
 
       }
 
     }
-
-
-
 
   };
 

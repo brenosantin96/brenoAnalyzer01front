@@ -51,11 +51,11 @@ export const useApi = (token?: string) => ({
     },
 
     create_Inc_Vs_Ritm_Texts: async (platform: string, casuistry: string, type_spanish: string, 
-        type_english: string, shortcut: string, kb_article: string) => {
+        type_english: string, shortcut: string, kb_article: string, created_by: number, last_edition_by: number) => {
 
         try {
             const response = await axios.post(`${baseURL}/api/inc_vs_ritm_texts`, {
-                platform, casuistry, type_spanish, type_english, shortcut, kb_article
+                platform, casuistry, type_spanish, type_english, shortcut, kb_article, created_by, last_edition_by
             }, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -86,7 +86,7 @@ export const useApi = (token?: string) => ({
         }
     },
 
-    getUserLogged: async () => {
+    getUserLogged: async (token: string) => {
 
         if(token){
 

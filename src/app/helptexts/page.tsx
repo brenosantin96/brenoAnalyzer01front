@@ -4,29 +4,39 @@ import Table from '@/components/Table'
 import React, { useEffect, useState } from 'react'
 import { redirect } from 'next/navigation' // Usado para redirecionar o usuário
 import { cookies } from 'next/headers'
+import { User } from '@/types/User'
 
 //SERVER COMPONENT
 const HelpTexts = async () => {
 
-    const token = cookies().get("token")?.value;
+    const token = cookies().get("token")?.value; //ATUALMENTE NAO POSSUI VALOR NENHUM!
+    console.log("TOKEN HELP TEXTS: ", token)
     const api = useApi(token);
 
-     // validating token
-     let allTableData = await api.getInc_Vs_Ritm_Texts();
+    // validating token
+    let allTableData = await api.getInc_Vs_Ritm_Texts();
 
-     if(allTableData.error){
+    //getting userLogged
+    let userLogged: User | undefined = undefined;
+
+    if (token !== undefined) {
+        console.log("Entrou aqui!")
+        let userLogged = await api.getUserLogged(token);
+        console.log("CONSEGUIU PEGAR O USER LOGGED: ", userLogged)
+    }
+
+    if (allTableData.error) {
         redirect('/login');
-     }
-     
-     console.log(allTableData)
+    }
 
+    console.log("USER LOGGED SENDO RETORNADO: ", userLogged)
 
     return (
         <>
-            <Navbar/>
+            <Navbar />
 
             <div>
-                <Table data_to_table={allTableData} />
+                <Table data_to_table={allTableData} token={token} userLogged={userLogged} />
             </div>
         </>
     )
