@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 type Props = {
   value: string;
   isSelected: boolean;
   onClick: () => void;
   onChange: (newValue: string) => void;
+  onEditingChange: (isEditing: boolean) => void; // Adicione a prop aqui
   width: string;
   bgColor: string;
   fontSize: string;
   evenOrOddColor: 0 | 1; //estou colocando aqui porque de algum modo da bug ao aplicar na ROW....
 }
 
-const TableCell = ({ value, isSelected, onClick, onChange, width, bgColor, fontSize, evenOrOddColor }: Props) => {
+const TableCell = ({ value, isSelected, onClick, onChange, width, bgColor, fontSize, evenOrOddColor, onEditingChange }: Props) => {
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -28,6 +29,11 @@ const TableCell = ({ value, isSelected, onClick, onChange, width, bgColor, fontS
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
+
+   // Utilize o useEffect para notificar o componente pai quando o estado isEditing mudar
+   useEffect(() => {
+    onEditingChange(isEditing);
+  }, [isEditing, onEditingChange]);
 
 
   //retorno condicional uma div normal se nao estiver editando, se estiver editando retornamos um input....

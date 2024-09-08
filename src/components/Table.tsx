@@ -14,7 +14,7 @@ type SelectedCell = { row: number | null; col: number | null };
 
 type PropsTable = {
   data_to_table: Inc_vs_ritm_text[];
-  token : string | undefined;
+  token: string | undefined;
   userLogged: User | undefined;
 };
 
@@ -23,22 +23,48 @@ const Table = ({ data_to_table, token, userLogged }: PropsTable) => {
 
   const api = useApi(token);
 
-  useEffect(()=> {
-  
+  useEffect(() => {
+
     console.log(userLogged)
-    console.log("userLogged?.id", userLogged?.id )
-    console.log("userLogged?.name", userLogged?.name )
-  },[])
+    console.log("userLogged?.id", userLogged?.id)
+    console.log("userLogged?.name", userLogged?.name)
+
+  }, [userLogged])
 
   const convertDataToTableData = (data: Inc_vs_ritm_text[]): string[][] => {
     return data.map((item) => [
-      item.platform,
-      item.casuistry,
-      item.type_spanish,
-      item.type_english,
-      item.shortcut,
-      item.kb_article,
+      item.platform, //0
+      item.casuistry, //1
+      item.type_spanish, //2
+      item.type_english, //3
+      item.shortcut, //4
+      item.kb_article, //5
+      item.id, //6,
+      item.createdById.toString(), //7
+      item.lastEditedById.toString(), //8
+      item.created_at.toString(), //9
+      item.last_edited_at.toString(), //10
+
     ]);
+  };
+
+  const convertStringsToIncVsRitmText = (data: string[][]): Inc_vs_ritm_text[] => {
+    return data.map((item, index) => ({
+      id: `${index}`, // Gerando um ID simples, pode ajustar conforme necessário
+      rowIndex: index,
+      platform: item[0],
+      casuistry: item[1],
+      type_spanish: item[2],
+      type_english: item[3],
+      shortcut: item[4],
+      kb_article: item[5],
+      created_by: {} as User, // Pode ajustar conforme a lógica de criação de usuários
+      last_edition_by: {} as User,
+      created_at: new Date(),
+      last_edited_at: new Date(),
+      createdById: 0, // Defina conforme a lógica do projeto
+      lastEditedById: 0
+    }));
   };
 
 
@@ -46,11 +72,62 @@ const Table = ({ data_to_table, token, userLogged }: PropsTable) => {
 
   const [tableData, setTableData] = useState<string[][]>(initialTableData);
   const [selectedCell, setSelectedCell] = useState<SelectedCell>({ row: null, col: null });
+  const [cellIsBeingEditted, setCellIsBeingEddited] = useState(false);
 
-  const updateCell = (rowIndex: number, cellIndex: number, newValue: string) => {
+
+  //assegurar para nao editar sempre no banco a cada letra modificada.
+  useEffect(() => {
+
+    if(cellIsBeingEditted){
+
+    }
+    if (!cellIsBeingEditted) {
+
+    }
+
+  }, [cellIsBeingEditted])
+
+ 
+  //getting info of what cell have been editted
+  const updateCell = async (rowIndex: number, cellIndex: number, newValue: string) => {
+
     const newTableData = [...tableData];
     newTableData[rowIndex][cellIndex] = newValue;
-    setTableData(newTableData);
+
+
+    if (cellIsBeingEditted) {
+      setTableData(newTableData);
+    }
+
+    if (!cellIsBeingEditted) {
+
+      let saved_Row_Inc_Vs_Ritm_Text = await api.edit_Inc_Vs_Ritm_Texts(
+        newTableData[rowIndex][6],
+        newTableData[rowIndex][0],
+        newTableData[rowIndex][1],
+        newTableData[rowIndex][2],
+        newTableData[rowIndex][3],
+        newTableData[rowIndex][4],
+        newTableData[rowIndex][5],
+        parseInt(newTableData[rowIndex][7]),
+        parseInt(newTableData[rowIndex][8])
+
+      )
+
+    }
+
+
+  };
+
+  const handleEditingChangeProp = (isEditing: boolean) => {
+
+    if (selectedCell && isEditing) {
+      setCellIsBeingEddited(true);
+      console.log("Esta sendo editado e esta selecionado: ", isEditing, selectedCell)
+    }
+    else {
+      setCellIsBeingEddited(false)
+    }
   };
 
   const controlKeypadMovement = (event: KeyboardEvent) => {
@@ -97,7 +174,7 @@ const Table = ({ data_to_table, token, userLogged }: PropsTable) => {
       const newLineAddedDatabase = await api.create_Inc_Vs_Ritm_Texts(newLine[0], newLine[1]
         , newLine[2], newLine[3], newLine[4], newLine[5], userLogged.id, userLogged.id)
 
-        console.log("newLineAddedDatabase: ",newLineAddedDatabase)
+      console.log("newLineAddedDatabase: ", newLineAddedDatabase)
 
       if (newLineAddedDatabase) {
         setTableData(newTableData);
@@ -178,6 +255,7 @@ const Table = ({ data_to_table, token, userLogged }: PropsTable) => {
             rowIndex={rowIndex}
             selectedCell={selectedCell}
             setSelectedCell={setSelectedCell}
+            onEditingChange={(isEditing) => handleEditingChangeProp(isEditing)}
             updateCell={updateCell}
             widths={columnWidths}
           />
