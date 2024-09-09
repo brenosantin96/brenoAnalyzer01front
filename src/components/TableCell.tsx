@@ -33,7 +33,7 @@ const TableCell = ({ value, isSelected, onClick, onChange, width, bgColor, fontS
    // Utilize o useEffect para notificar o componente pai quando o estado isEditing mudar
    useEffect(() => {
     onEditingChange(isEditing);
-  }, [isEditing, onEditingChange]);
+  }, [isEditing]);
 
 
   //retorno condicional uma div normal se nao estiver editando, se estiver editando retornamos um input....

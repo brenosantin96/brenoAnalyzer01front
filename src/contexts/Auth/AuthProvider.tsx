@@ -16,7 +16,6 @@ export const AuthProvider = ({ children }: ProviderType) => {
 
   useEffect(() => {
     const storedToken = getCookie("token") || localStorage.getItem("token");
-    console.log("STORED TOKEN ENCONTRADO: ", storedToken);
     if (storedToken) {
       handleToken(storedToken as string);
       validateUser(storedToken as string);
@@ -25,13 +24,10 @@ export const AuthProvider = ({ children }: ProviderType) => {
 
   const validateUser = async (token: string) => {
     const userLogged = await api.getUserLogged(token);
-    console.log("AUTH PROVIDER, USER LOGGED: ",userLogged)
 
     if (userLogged) {
       setUser(userLogged);
     } else {
-
-      console.log("LIMPANDO TOKEN pois nao é valido!")
       // Limpa o token caso não seja válido
       handleToken("");
       setUser(null);

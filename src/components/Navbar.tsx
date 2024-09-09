@@ -22,13 +22,9 @@ const Navbar = () => {
 
     useEffect(() => {
         setIsLogged(authContext.user !== null);
-        console.log("NAVBAR: ", authContext)
     }, [authContext.user]);
 
 
-    useEffect(() => {
-        console.log(isLogged)
-    }, [isLogged])
 
     const signOut = () => {
         console.log("SIGNING OUT!")

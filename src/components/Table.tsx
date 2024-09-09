@@ -23,14 +23,6 @@ const Table = ({ data_to_table, token, userLogged }: PropsTable) => {
 
   const api = useApi(token);
 
-  useEffect(() => {
-
-    console.log(userLogged)
-    console.log("userLogged?.id", userLogged?.id)
-    console.log("userLogged?.name", userLogged?.name)
-
-  }, [userLogged])
-
   const convertDataToTableData = (data: Inc_vs_ritm_text[]): string[][] => {
     return data.map((item) => [
       item.platform, //0
@@ -72,50 +64,58 @@ const Table = ({ data_to_table, token, userLogged }: PropsTable) => {
 
   const [tableData, setTableData] = useState<string[][]>(initialTableData);
   const [selectedCell, setSelectedCell] = useState<SelectedCell>({ row: null, col: null });
+
+  //check if any cell is being editted.
   const [cellIsBeingEditted, setCellIsBeingEddited] = useState(false);
 
 
-  //assegurar para nao editar sempre no banco a cada letra modificada.
-  useEffect(() => {
+ //USE EFFECT to control if cell is being editted to allow save in database
 
-    if(cellIsBeingEditted){
+ useEffect(() => {
 
-    }
-    if (!cellIsBeingEditted) {
+  // Verifica se a célula parou de ser editada e dispara o salvamento
+  if (!cellIsBeingEditted && selectedCell.row !== null && selectedCell.col !== null) {
+    
+    const rowIndex = selectedCell.row;
+    const cellIndex = selectedCell.col;
 
-    }
+    // Realize o salvamento aqui com os dados atualizados
+    const saveCellData = async () => {
+      try {
+        const saved_Row_Inc_Vs_Ritm_Text = await api.edit_Inc_Vs_Ritm_Texts(
+          tableData[rowIndex][6], //id
+          tableData[rowIndex][0], //platform
+          tableData[rowIndex][1], //casuistic
+          tableData[rowIndex][2], //spanish type
+          tableData[rowIndex][3], //english type
+          tableData[rowIndex][4], //shortcut
+          tableData[rowIndex][5], //kb article
+          parseInt(tableData[rowIndex][7]), //createdBy
+          parseInt(tableData[rowIndex][8])  //lastEditedBy
+        );
 
-  }, [cellIsBeingEditted])
+        console.log("Dados salvos com sucesso:", saved_Row_Inc_Vs_Ritm_Text);
+      } catch (error) {
+        console.error("Erro ao salvar os dados:", error);
+      }
+    };
 
- 
+    // Chama a função de salvar
+    saveCellData();
+  }
+}, [cellIsBeingEditted]);
+
+
+
   //getting info of what cell have been editted
   const updateCell = async (rowIndex: number, cellIndex: number, newValue: string) => {
 
+    //locally updating table.
     const newTableData = [...tableData];
     newTableData[rowIndex][cellIndex] = newValue;
 
-
-    if (cellIsBeingEditted) {
-      setTableData(newTableData);
-    }
-
-    if (!cellIsBeingEditted) {
-
-      let saved_Row_Inc_Vs_Ritm_Text = await api.edit_Inc_Vs_Ritm_Texts(
-        newTableData[rowIndex][6],
-        newTableData[rowIndex][0],
-        newTableData[rowIndex][1],
-        newTableData[rowIndex][2],
-        newTableData[rowIndex][3],
-        newTableData[rowIndex][4],
-        newTableData[rowIndex][5],
-        parseInt(newTableData[rowIndex][7]),
-        parseInt(newTableData[rowIndex][8])
-
-      )
-
-    }
-
+    //updating local status of table
+    setTableData(newTableData);
 
   };
 
@@ -123,11 +123,12 @@ const Table = ({ data_to_table, token, userLogged }: PropsTable) => {
 
     if (selectedCell && isEditing) {
       setCellIsBeingEddited(true);
-      console.log("Esta sendo editado e esta selecionado: ", isEditing, selectedCell)
     }
-    else {
-      setCellIsBeingEddited(false)
+
+    if (selectedCell && !isEditing) {
+      setCellIsBeingEddited(false);
     }
+
   };
 
   const controlKeypadMovement = (event: KeyboardEvent) => {
@@ -167,14 +168,8 @@ const Table = ({ data_to_table, token, userLogged }: PropsTable) => {
       const newLine = ["", "", "", "", "", ""];
       const newTableData = [...tableData, newLine];
 
-      console.log("authContext.user.id: ", userLogged.id)
-      console.log("authContext.user.name", userLogged.name)
-
-
       const newLineAddedDatabase = await api.create_Inc_Vs_Ritm_Texts(newLine[0], newLine[1]
         , newLine[2], newLine[3], newLine[4], newLine[5], userLogged.id, userLogged.id)
-
-      console.log("newLineAddedDatabase: ", newLineAddedDatabase)
 
       if (newLineAddedDatabase) {
         setTableData(newTableData);

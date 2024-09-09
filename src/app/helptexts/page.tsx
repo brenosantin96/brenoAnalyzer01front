@@ -11,7 +11,6 @@ const HelpTexts = async () => {
 
     const token = cookies().get("token")?.value; //ATUALMENTE NAO POSSUI VALOR NENHUM!
     const api = useApi(token);
-    console.log("TOKEN HELP TEXTS: ", token)
 
     // validating token
     let allTableData = await api.getInc_Vs_Ritm_Texts();
@@ -20,17 +19,13 @@ const HelpTexts = async () => {
     let userLogged: User | undefined = undefined;
 
     if (token !== undefined) {
-        console.log("Entrou aqui!")
         let userLoggedWithoutDesconstructing = await api.getUserLogged(token);
         userLogged = userLoggedWithoutDesconstructing.user;
-        console.log("CONSEGUIU PEGAR O USER LOGGED: ", userLogged)
     }
 
     if (allTableData.error) {
         redirect('/login');
     }
-
-    console.log("USER LOGGED SENDO RETORNADO: ", userLogged)
 
     return (
         <>
