@@ -8,6 +8,8 @@ import { useAuthContext } from "@/contexts/Auth/AuthContext";
 import { User } from "@/types/User";
 import { v4 as uuidv4 } from 'uuid';
 import { useApi } from "@/api/api";
+import { RightClickContextMenuTable } from "./RightClickContextMenuTable";
+import { convertDataToTableData } from "@/utils/ConvertDataToTableData";
 
 
 type SelectedCell = { row: number | null; col: number | null };
@@ -23,87 +25,80 @@ const Table = ({ data_to_table, token, userLogged }: PropsTable) => {
 
   const api = useApi(token);
 
-  const convertDataToTableData = (data: Inc_vs_ritm_text[]): string[][] => {
-    return data.map((item) => [
-      item.platform, //0
-      item.casuistry, //1
-      item.type_spanish, //2
-      item.type_english, //3
-      item.shortcut, //4
-      item.kb_article, //5
-      item.id, //6,
-      item.createdById.toString(), //7
-      item.lastEditedById.toString(), //8
-      item.created_at.toString(), //9
-      item.last_edited_at.toString(), //10
-
-    ]);
-  };
-
-  const convertStringsToIncVsRitmText = (data: string[][]): Inc_vs_ritm_text[] => {
-    return data.map((item, index) => ({
-      id: `${index}`, // Gerando um ID simples, pode ajustar conforme necessário
-      rowIndex: index,
-      platform: item[0],
-      casuistry: item[1],
-      type_spanish: item[2],
-      type_english: item[3],
-      shortcut: item[4],
-      kb_article: item[5],
-      created_by: {} as User, // Pode ajustar conforme a lógica de criação de usuários
-      last_edition_by: {} as User,
-      created_at: new Date(),
-      last_edited_at: new Date(),
-      createdById: 0, // Defina conforme a lógica do projeto
-      lastEditedById: 0
-    }));
-  };
-
-
   const initialTableData = convertDataToTableData(data_to_table);
 
   const [tableData, setTableData] = useState<string[][]>(initialTableData);
+
   const [selectedCell, setSelectedCell] = useState<SelectedCell>({ row: null, col: null });
 
   //check if any cell is being editted.
   const [cellIsBeingEditted, setCellIsBeingEddited] = useState(false);
 
+  //context Menu
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null);
 
- //USE EFFECT to control if cell is being editted to allow save in database
 
- useEffect(() => {
+  useEffect(() => {
+    //se a celula estiver sendo editada e mudar o estado para edicao, vai ser fechado o menu de contexto
+    if (cellIsBeingEditted) {
+      handleCloseMenu()
+    }
+    //se a celula NAO estiver sendo editada e mudar a celula selecionada, vai ser fechado o menu de contexto
+    if(!cellIsBeingEditted){
+      //so vai entrar aqui dentro se a celula selecionada for mudada.
+      deleteIncVsRITMText();
+      handleCloseMenu()
+    }
+  
+  }, [cellIsBeingEditted, selectedCell])
 
-  // Verifica se a célula parou de ser editada e dispara o salvamento
-  if (!cellIsBeingEditted && selectedCell.row !== null && selectedCell.col !== null) {
-    
-    const rowIndex = selectedCell.row;
-    const cellIndex = selectedCell.col;
+  const handleRightClick = (e: React.MouseEvent) => {
 
-    // Realize o salvamento aqui com os dados atualizados
-    const saveCellData = async () => {
-      try {
-        const saved_Row_Inc_Vs_Ritm_Text = await api.edit_Inc_Vs_Ritm_Texts(
-          tableData[rowIndex][6], //id
-          tableData[rowIndex][0], //platform
-          tableData[rowIndex][1], //casuistic
-          tableData[rowIndex][2], //spanish type
-          tableData[rowIndex][3], //english type
-          tableData[rowIndex][4], //shortcut
-          tableData[rowIndex][5], //kb article
-          parseInt(tableData[rowIndex][7]), //createdBy
-          parseInt(tableData[rowIndex][8])  //lastEditedBy
-        );
+    if (selectedCell.col !== null && selectedCell.row !== null) {
+      e.preventDefault();
+      setContextMenu({ x: e.pageX, y: e.pageY });
+    }
+  };
 
-        console.log("Dados salvos com sucesso:", saved_Row_Inc_Vs_Ritm_Text);
-      } catch (error) {
-        console.error("Erro ao salvar os dados:", error);
-      }
-    };
+  const handleCloseMenu = () => {
+    setContextMenu(null);
+  };
 
-    // Chama a função de salvar
-    saveCellData();
-  }
-}, [cellIsBeingEditted]);
+
+  //USE EFFECT to control if cell is being editted to allow save in database
+  useEffect(() => {
+
+    // Verifica se a célula parou de ser editada e dispara o salvamento
+    if (!cellIsBeingEditted && selectedCell.row !== null && selectedCell.col !== null) {
+
+      const rowIndex = selectedCell.row;
+      const cellIndex = selectedCell.col;
+
+      // Realize o salvamento aqui com os dados atualizados
+      const saveCellData = async () => {
+        try {
+          const saved_Row_Inc_Vs_Ritm_Text = await api.edit_Inc_Vs_Ritm_Texts(
+            tableData[rowIndex][6], //id
+            tableData[rowIndex][0], //platform
+            tableData[rowIndex][1], //casuistic
+            tableData[rowIndex][2], //spanish type
+            tableData[rowIndex][3], //english type
+            tableData[rowIndex][4], //shortcut
+            tableData[rowIndex][5], //kb article
+            parseInt(tableData[rowIndex][7]), //createdBy
+            parseInt(tableData[rowIndex][8])  //lastEditedBy
+          );
+
+          console.log("Dados salvos com sucesso:", saved_Row_Inc_Vs_Ritm_Text);
+        } catch (error) {
+          console.error("Erro ao salvar os dados:", error);
+        }
+      };
+
+      // Chama a função de salvar
+      saveCellData();
+    }
+  }, [cellIsBeingEditted]);
 
 
 
@@ -130,6 +125,12 @@ const Table = ({ data_to_table, token, userLogged }: PropsTable) => {
     }
 
   };
+
+  //function to delete ROW
+  const deleteIncVsRITMText = async () => {
+
+    console.log("Deletando Linha...")
+  }
 
   const controlKeypadMovement = (event: KeyboardEvent) => {
     let newSelectedCell = { ...selectedCell };
@@ -193,7 +194,7 @@ const Table = ({ data_to_table, token, userLogged }: PropsTable) => {
   }, [selectedCell]);
 
   return (
-    <div onKeyUp={() => controlKeypadMovement}>
+    <div onContextMenu={handleRightClick} onKeyUp={() => controlKeypadMovement}>
       <div className="mt-[75px]">
         <ul className="ml-2 flex gap-4 font-bold text-[#5A5A5A] ">
           <li>
@@ -259,6 +260,11 @@ const Table = ({ data_to_table, token, userLogged }: PropsTable) => {
         <div onClick={addLineToTable} className="pl-2 py-2 max-w-20 flex justify-center items-center bg-red-300">
           <Icon svg="plusIcon" height="40px" width="40px" fillColor="#A0A0A0" />
         </div>
+
+        {contextMenu && (
+          <RightClickContextMenuTable x={contextMenu.x} y={contextMenu.y} onClose={handleCloseMenu} />
+        )}
+
       </div>
     </div>
   );

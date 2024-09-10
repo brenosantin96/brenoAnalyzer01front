@@ -5,6 +5,7 @@ import { useAuthContext } from '@/contexts/Auth/AuthContext';
 import React from 'react'
 import { cookies } from 'next/headers'
 import { User } from '@/types/User';
+import { RightClickContextMenuTable } from '@/components/RightClickContextMenuTable';
 
 const Home = async () => {
 

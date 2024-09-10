@@ -86,6 +86,23 @@ export const useApi = (token?: string) => ({
         }
     },
 
+    delete_Inc_Vs_Ritm_Texts: async (id:string) => {
+
+        try {
+            const response = await axios.delete(`${baseURL}/api/inc_vs_ritm_texts/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            const axiosError = error as AxiosErrorResponse;
+            
+            return { error: axiosError.response?.data.error || axiosError.message };
+        }
+    },
+
     getUserLogged: async (token: string) => {
 
         if(token){
