@@ -15,17 +15,18 @@ import { convertDataToTableData } from "@/utils/ConvertDataToTableData";
 type SelectedCell = { row: number | null; col: number | null };
 
 type PropsTable = {
-  data_to_table: Inc_vs_ritm_text[];
+  all_data_table: Inc_vs_ritm_text[];
+  filtered_data_to_table: Inc_vs_ritm_text[];
   token: string | undefined;
   userLogged: User | undefined;
 };
 
-const Table = ({ data_to_table, token, userLogged }: PropsTable) => {
+const Table = ({ filtered_data_to_table, all_data_table, token, userLogged }: PropsTable) => {
 
 
   const api = useApi(token);
 
-  const initialTableData = convertDataToTableData(data_to_table);
+  const initialTableData = convertDataToTableData(filtered_data_to_table);
 
   const [tableData, setTableData] = useState<string[][]>(initialTableData);
 
@@ -39,17 +40,8 @@ const Table = ({ data_to_table, token, userLogged }: PropsTable) => {
 
 
   useEffect(() => {
-    //se a celula estiver sendo editada e mudar o estado para edicao, vai ser fechado o menu de contexto
-    if (cellIsBeingEditted) {
-      handleCloseMenu()
-    }
-    //se a celula NAO estiver sendo editada e mudar a celula selecionada, vai ser fechado o menu de contexto
-    if(!cellIsBeingEditted){
-      //so vai entrar aqui dentro se a celula selecionada for mudada.
-      deleteIncVsRITMText();
-      handleCloseMenu()
-    }
-  
+      handleCloseMenu()  
+      console.log(initialTableData)   
   }, [cellIsBeingEditted, selectedCell])
 
   const handleRightClick = (e: React.MouseEvent) => {
@@ -65,40 +57,47 @@ const Table = ({ data_to_table, token, userLogged }: PropsTable) => {
   };
 
 
-  //USE EFFECT to control if cell is being editted to allow save in database
-  useEffect(() => {
+ //USE EFFECT to control if cell is being editted to allow save in database
+useEffect(() => {
+  if (!cellIsBeingEditted && selectedCell.row !== null && selectedCell.col !== null) {
+    const rowIndex = selectedCell.row;
+    const cellIndex = selectedCell.col;
 
-    // Verifica se a célula parou de ser editada e dispara o salvamento
-    if (!cellIsBeingEditted && selectedCell.row !== null && selectedCell.col !== null) {
+    // Realize o salvamento aqui com os dados atualizados
+    const saveCellData = async () => {
+      try {
+        //TROCAR para ser o campo shortCUT e shortcut vai ter que ser UNICO
+        // Busca o item correspondente no all_data_table com base no campo english_type
+        const correspondingItem = all_data_table.find(
+          (item) => item.type_english === tableData[rowIndex][3]
+        );
 
-      const rowIndex = selectedCell.row;
-      const cellIndex = selectedCell.col;
-
-      // Realize o salvamento aqui com os dados atualizados
-      const saveCellData = async () => {
-        try {
+        if (correspondingItem) {
           const saved_Row_Inc_Vs_Ritm_Text = await api.edit_Inc_Vs_Ritm_Texts(
-            tableData[rowIndex][6], //id
-            tableData[rowIndex][0], //platform
-            tableData[rowIndex][1], //casuistic
-            tableData[rowIndex][2], //spanish type
-            tableData[rowIndex][3], //english type
-            tableData[rowIndex][4], //shortcut
-            tableData[rowIndex][5], //kb article
-            parseInt(tableData[rowIndex][7]), //createdBy
-            parseInt(tableData[rowIndex][8])  //lastEditedBy
+            correspondingItem.id, // O ID encontrado
+            tableData[rowIndex][0], // platform
+            tableData[rowIndex][1], // casuistic
+            tableData[rowIndex][2], // spanish type
+            tableData[rowIndex][3], // english type
+            tableData[rowIndex][4], // shortcut
+            tableData[rowIndex][5], // kb article
+            correspondingItem.createdById, // createdBy
+            correspondingItem.lastEditedById  // lastEditedBy
           );
 
           console.log("Dados salvos com sucesso:", saved_Row_Inc_Vs_Ritm_Text);
-        } catch (error) {
-          console.error("Erro ao salvar os dados:", error);
+        } else {
+          console.error("Item correspondente não encontrado no all_data_table");
         }
-      };
+      } catch (error) {
+        console.error("Erro ao salvar os dados:", error);
+      }
+    };
 
-      // Chama a função de salvar
-      saveCellData();
-    }
-  }, [cellIsBeingEditted]);
+    // Chama a função de salvar
+    saveCellData();
+  }
+}, [cellIsBeingEditted]);
 
 
 

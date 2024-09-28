@@ -15,12 +15,21 @@ const HelpTexts = async () => {
     // validating token
     let allTableData = await api.getInc_Vs_Ritm_Texts();
 
+    // Filtrando as colunas que você não quer renderizar
+    const filteredData = allTableData.map((row: any) => {
+        const { id, created_by, last_edited_by, created_at, lastEdited_at, ...rest } = row;
+        return rest;  // Retorna apenas as colunas que você deseja exibir
+    });
+
     //getting userLogged
     let userLogged: User | undefined = undefined;
 
     if (token !== undefined) {
         let userLoggedWithoutDesconstructing = await api.getUserLogged(token);
-        userLogged = userLoggedWithoutDesconstructing.user;
+
+        if(userLoggedWithoutDesconstructing){
+            userLogged = userLoggedWithoutDesconstructing.user;
+        }
     }
 
     if (allTableData.error) {
@@ -32,7 +41,7 @@ const HelpTexts = async () => {
             <Navbar />
 
             <div>
-                <Table data_to_table={allTableData} token={token} userLogged={userLogged} />
+                <Table all_data_table={allTableData} filtered_data_to_table={filteredData} token={token} userLogged={userLogged} />
             </div>
         </>
     )

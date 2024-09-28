@@ -9,12 +9,11 @@ export const convertDataToTableData = (data: Inc_vs_ritm_text[]): string[][] => 
       item.type_english, //3
       item.shortcut, //4
       item.kb_article, //5
-      item.id, //6,
-      item.createdById.toString(), //7
-      item.lastEditedById.toString(), //8
-      item.created_at.toString(), //9
-      item.last_edited_at.toString(), //10
-
+      //item.id, //6,
+      //item.createdById.toString(), //7
+      //item.lastEditedById.toString(), //8
+      //item.created_at.toString(), //9
+      //item.last_edited_at.toString(), //10
     ]);
   };
 
@@ -36,3 +35,21 @@ export const convertStringsToIncVsRitmText = (data: string[][]): Inc_vs_ritm_tex
       lastEditedById: 0
     }));
   };
+
+
+/*   export const convertDataToTableData = (data: Inc_vs_ritm_text[]): string[][] => {
+    return data.map((item) => [
+      item.platform, //0
+      item.casuistry, //1
+      item.type_spanish, //2
+      item.type_english, //3
+      item.shortcut, //4
+      item.kb_article, //5
+      item.id, //6,
+      item.createdById.toString(), //7
+      item.lastEditedById.toString(), //8
+      item.created_at.toString(), //9
+      item.last_edited_at.toString(), //10
+
+    ]);
+  }; */
