@@ -9,9 +9,9 @@ export const convertDataToTableData = (data: Inc_vs_ritm_text[]): string[][] => 
       item.type_english, //3
       item.shortcut, //4
       item.kb_article, //5
-      //item.id, //6,
-      //item.createdById.toString(), //7
-      //item.lastEditedById.toString(), //8
+      item.id, //6,
+      item.createdById.toString(), //7
+      item.lastEditedById.toString(), //8
       //item.created_at.toString(), //9
       //item.last_edited_at.toString(), //10
     ]);

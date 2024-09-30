@@ -69,11 +69,11 @@ export const useApi = (token?: string) => ({
     },
 
     edit_Inc_Vs_Ritm_Texts: async (id:string, platform: string, casuistry: string, type_spanish: string, 
-        type_english: string, shortcut: string, kb_article: string, created_by: number, last_edition_by: number) => {
+        type_english: string, shortcut: string, kb_article: string, last_edition_by: number) => {
 
         try {
             const response = await axios.put(`${baseURL}/api/inc_vs_ritm_texts/${id}`, {
-                platform, casuistry, type_spanish, type_english, shortcut, kb_article, created_by, last_edition_by
+                platform, casuistry, type_spanish, type_english, shortcut, kb_article, last_edition_by
             }, {
                 headers: {
                     'Authorization': `Bearer ${token}`,

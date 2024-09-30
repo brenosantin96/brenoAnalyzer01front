@@ -37,6 +37,7 @@ const TableRow = ({
           bgColor={`bg-grey-table`}
           fontSize={`text-xs`}
           key={cellIndex}
+          keyIndex={cellIndex}
           value={cellData}
           isSelected={selectedCell.row === rowIndex && selectedCell.col === cellIndex}
           onClick={() => handleSelectCell(cellIndex)} 

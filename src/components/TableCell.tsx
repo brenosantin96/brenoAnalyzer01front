@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 type Props = {
   value: string;
   isSelected: boolean;
+  keyIndex: number,
   onClick: () => void;
   onChange: (newValue: string) => void;
   onEditingChange: (isEditing: boolean) => void; // Adicione a prop aqui
@@ -12,11 +13,12 @@ type Props = {
   evenOrOddColor: 0 | 1; //estou colocando aqui porque de algum modo da bug ao aplicar na ROW....
 }
 
-const TableCell = ({ value, isSelected, onClick, onChange, width, bgColor, fontSize, evenOrOddColor, onEditingChange }: Props) => {
+const TableCell = ({ value, keyIndex, isSelected, onClick, onChange, width, bgColor, fontSize, evenOrOddColor, onEditingChange }: Props) => {
 
   const [isEditing, setIsEditing] = useState(false);
 
   const handleDoubleClick = () => {
+    console.log(keyIndex);
     setIsEditing(true);
   };
 
@@ -40,7 +42,8 @@ const TableCell = ({ value, isSelected, onClick, onChange, width, bgColor, fontS
 
   return (
     <div
-      className={`${width} ${bgColor} ${fontSize} text-[#5A5A5A] text-wrap flex items-center text-left 
+      className={`${width} ${bgColor} ${fontSize} text-[#5A5A5A] text-wrap flex items-center text-left
+      ${keyIndex > 5 ? 'hidden' : " "}
       ${isSelected ? 'border-gray-600 border-2' : 'border border-gray-400'}
       ${evenOrOddColor === 0 ? "bg-gray-300" : "bg-white"}
       ${isEditing ? "pl-0" : "pl-2"}

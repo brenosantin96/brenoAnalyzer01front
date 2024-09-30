@@ -26,7 +26,10 @@ const Table = ({ filtered_data_to_table, all_data_table, token, userLogged }: Pr
 
   const api = useApi(token);
 
-  const initialTableData = convertDataToTableData(filtered_data_to_table);
+  const authContext = useAuthContext();
+
+
+  const initialTableData = convertDataToTableData(all_data_table);
 
   const [tableData, setTableData] = useState<string[][]>(initialTableData);
 
@@ -40,8 +43,8 @@ const Table = ({ filtered_data_to_table, all_data_table, token, userLogged }: Pr
 
 
   useEffect(() => {
-      handleCloseMenu()  
-      console.log(initialTableData)   
+    handleCloseMenu()
+    console.log(initialTableData)
   }, [cellIsBeingEditted, selectedCell])
 
   const handleRightClick = (e: React.MouseEvent) => {
@@ -57,47 +60,43 @@ const Table = ({ filtered_data_to_table, all_data_table, token, userLogged }: Pr
   };
 
 
- //USE EFFECT to control if cell is being editted to allow save in database
-useEffect(() => {
-  if (!cellIsBeingEditted && selectedCell.row !== null && selectedCell.col !== null) {
-    const rowIndex = selectedCell.row;
-    const cellIndex = selectedCell.col;
+  //USE EFFECT to control if cell is being editted to allow save in database
+  useEffect(() => {
+    if (!cellIsBeingEditted && selectedCell.row !== null && selectedCell.col !== null) {
 
-    // Realize o salvamento aqui com os dados atualizados
-    const saveCellData = async () => {
-      try {
-        //TROCAR para ser o campo shortCUT e shortcut vai ter que ser UNICO
-        // Busca o item correspondente no all_data_table com base no campo english_type
-        const correspondingItem = all_data_table.find(
-          (item) => item.type_english === tableData[rowIndex][3]
-        );
+      const rowIndex = selectedCell.row;
+      const cellIndex = selectedCell.col;
 
-        if (correspondingItem) {
-          const saved_Row_Inc_Vs_Ritm_Text = await api.edit_Inc_Vs_Ritm_Texts(
-            correspondingItem.id, // O ID encontrado
-            tableData[rowIndex][0], // platform
-            tableData[rowIndex][1], // casuistic
-            tableData[rowIndex][2], // spanish type
-            tableData[rowIndex][3], // english type
-            tableData[rowIndex][4], // shortcut
-            tableData[rowIndex][5], // kb article
-            correspondingItem.createdById, // createdBy
-            correspondingItem.lastEditedById  // lastEditedBy
-          );
+      //get User logged
+      if (authContext.user)  {
 
-          console.log("Dados salvos com sucesso:", saved_Row_Inc_Vs_Ritm_Text);
-        } else {
-          console.error("Item correspondente não encontrado no all_data_table");
-        }
-      } catch (error) {
-        console.error("Erro ao salvar os dados:", error);
+        // Realize o salvamento aqui com os dados atualizados
+        const saveCellData = async () => {
+          try {
+            const saved_Row_Inc_Vs_Ritm_Text = await api.edit_Inc_Vs_Ritm_Texts(
+              tableData[rowIndex][6], // O ID encontrado
+              tableData[rowIndex][0], // platform
+              tableData[rowIndex][1], // casuistic
+              tableData[rowIndex][2], // spanish type
+              tableData[rowIndex][3], // english type
+              tableData[rowIndex][4], // shortcut
+              tableData[rowIndex][5], // kb article
+              (authContext.user as User).id ? (authContext.user as User).id : 1,  // lastEditedBy
+            );
+
+            console.log("Dados salvos com sucesso:", saved_Row_Inc_Vs_Ritm_Text);
+
+          } catch (error) {
+            console.error("Erro ao salvar os dados:", error);
+          }
+        };
+
+        // Chama a função de salvar
+        saveCellData();
       }
-    };
 
-    // Chama a função de salvar
-    saveCellData();
-  }
-}, [cellIsBeingEditted]);
+    }
+  }, [cellIsBeingEditted]);
 
 
 
@@ -163,21 +162,27 @@ useEffect(() => {
   };
 
   const addLineToTable = async () => {
-
     if (userLogged) {
-      const newLine = ["", "", "", "", "", ""];
-      const newTableData = [...tableData, newLine];
+      // Crie uma nova linha com campos vazios, mas sem adicionar ainda no state
+      const newLine = ["", "", "", "", `Shortcutz${tableData.length + 1}`, ""];
+  
+      // Adicione a nova linha ao banco de dados
+      const newLineAddedDatabase = await api.create_Inc_Vs_Ritm_Texts(
+        newLine[0], newLine[1], newLine[2], newLine[3], newLine[4], newLine[5], 
+        userLogged.id, userLogged.id
+      );
 
-      const newLineAddedDatabase = await api.create_Inc_Vs_Ritm_Texts(newLine[0], newLine[1]
-        , newLine[2], newLine[3], newLine[4], newLine[5], userLogged.id, userLogged.id)
-
-      if (newLineAddedDatabase) {
+      console.log(newLineAddedDatabase);
+  
+      // Verifique se a nova linha foi adicionada com sucesso e se o ID foi retornado
+      if (newLineAddedDatabase && newLineAddedDatabase.newIncVsRitmText.id) {
+        // Atualize a nova linha com o ID retornado
+        const newTableData = [...tableData, [...newLine, newLineAddedDatabase.newIncVsRitmText.id]];
+  
+        // Atualize o estado da tabela com a nova linha e ID correto
         setTableData(newTableData);
-
       }
-
     }
-
   };
 
   useEffect(() => {

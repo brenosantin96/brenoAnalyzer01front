@@ -17,7 +17,7 @@ const HelpTexts = async () => {
 
     // Filtrando as colunas que você não quer renderizar
     const filteredData = allTableData.map((row: any) => {
-        const { id, created_by, last_edited_by, created_at, lastEdited_at, ...rest } = row;
+        const { created_by, last_edited_by, created_at, lastEdited_at, ...rest } = row;
         return rest;  // Retorna apenas as colunas que você deseja exibir
     });
 
