@@ -44,19 +44,18 @@ const Table = ({ filtered_data_to_table, all_data_table, token, userLogged }: Pr
 
   useEffect(() => {
     handleCloseMenu()
-    console.log(initialTableData)
   }, [cellIsBeingEditted, selectedCell])
 
   const handleRightClick = (e: React.MouseEvent) => {
 
-    if (selectedCell.col !== null && selectedCell.row !== null) {
-      e.preventDefault();
-      setContextMenu({ x: e.pageX, y: e.pageY });
-    }
+ //   if (selectedCell.col !== null && selectedCell.row !== null) {
+  //    e.preventDefault();
+  //    setContextMenu({ x: e.pageX, y: e.pageY });
+  //  }
   };
 
   const handleCloseMenu = () => {
-    setContextMenu(null);
+    //setContextMenu(null);
   };
 
 
@@ -249,7 +248,7 @@ const Table = ({ filtered_data_to_table, all_data_table, token, userLogged }: Pr
             textColor={`text-white`}
             fontSize={`text-[22px]`}
             fontWeight={`font-bold`}
-            lineHeight={`h-[80px]`}
+            lineHeight={`min-h-[80px]`}
             key={rowIndex}
             rowData={rowData}
             rowIndex={rowIndex}
@@ -265,9 +264,9 @@ const Table = ({ filtered_data_to_table, all_data_table, token, userLogged }: Pr
           <Icon svg="plusIcon" height="40px" width="40px" fillColor="#A0A0A0" />
         </div>
 
-        {contextMenu && (
+       {/*  {contextMenu && (
           <RightClickContextMenuTable x={contextMenu.x} y={contextMenu.y} onClose={handleCloseMenu} />
-        )}
+        )} */}
 
       </div>
     </div>

@@ -12,7 +12,7 @@ type RowProps = {
   fontSize: string;
   fontWeight?: string;
   widths: string[];
-  lineHeight: string;
+  lineHeight?: string;
   evenOrOddColor: 0 | 1;
 }
 

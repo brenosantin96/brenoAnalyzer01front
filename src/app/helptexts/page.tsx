@@ -24,8 +24,16 @@ const HelpTexts = async () => {
     //getting userLogged
     let userLogged: User | undefined = undefined;
 
+    if(token === undefined){
+        redirect('/login');
+    }
+
     if (token !== undefined) {
         let userLoggedWithoutDesconstructing = await api.getUserLogged(token);
+
+        if(userLoggedWithoutDesconstructing.error){
+            redirect('/login');
+        }
 
         if(userLoggedWithoutDesconstructing){
             userLogged = userLoggedWithoutDesconstructing.user;

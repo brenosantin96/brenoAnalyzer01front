@@ -1,3 +1,4 @@
+import { textToHtmlParagraph3 } from '@/utils/TableTextsUtils';
 import React, { useEffect, useState } from 'react';
 
 type Props = {
@@ -18,7 +19,6 @@ const TableCell = ({ value, keyIndex, isSelected, onClick, onChange, width, bgCo
   const [isEditing, setIsEditing] = useState(false);
 
   const handleDoubleClick = () => {
-    console.log(keyIndex);
     setIsEditing(true);
   };
 
@@ -28,7 +28,7 @@ const TableCell = ({ value, keyIndex, isSelected, onClick, onChange, width, bgCo
   };
 
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onChange(e.target.value);
   };
 
@@ -55,16 +55,15 @@ const TableCell = ({ value, keyIndex, isSelected, onClick, onChange, width, bgCo
 
     >
       {isEditing ? (
-        <input
-          className={`h-[79px] ${width} outline-none`}
-          type="text"
+        <textarea
+          className={` min-h-[79px] ${width} outline-none`}
           value={value}
           onChange={handleChange}
           onBlur={handleBlur}
           autoFocus
         />
       ) : (
-        <span>{value}</span>
+        textToHtmlParagraph3(value)
       )}
     </div>
   );
